@@ -1,0 +1,13 @@
+Items: {
+	Jinxi: {
+		DisplayName: 今昔的记忆
+		Tooltip: "不嘻嘻"
+	}
+
+	GachaMachineItem: {
+		DisplayName: 扭蛋机
+		Tooltip: "抽卡！"
+	}
+}
+
+Tiles.GachaMachineTile.MapEntry: Gacha Machine Tile
