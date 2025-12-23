@@ -3,4 +3,11 @@ Items: {
 		DisplayName: Jinxi
 		Tooltip: ""
 	}
+
+	GachaMachineItem: {
+		DisplayName: Gacha Machine Item
+		Tooltip: ""
+	}
 }
+
+Tiles.GachaMachineTile.MapEntry: Gacha Machine Tile

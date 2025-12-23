@@ -8,7 +8,6 @@ namespace madake1.Players
 
     public class SeedLockTile : GlobalTile
     {
-        // private bool IsLockedWorld => true;
         private bool IsLockedWorld => Main.ActiveWorldFileData.Seed == 897520328;
 
 
@@ -44,15 +43,16 @@ namespace madake1.Players
         }
     }
 
-    public class SeedLockPlayerUseItem : ModPlayer
+    // 禁止破坏墙壁
+    public class SeedLockWall : GlobalWall
     {
-        private bool IsLockedWorld => true;
+        private bool IsLockedWorld => Main.ActiveWorldFileData.Seed == 897520328;
 
-        public override bool CanUseItem(Item item)
+        public override void KillWall(int i, int j, int type, ref bool fail)
         {
             if (IsLockedWorld)
-                return true; // 允许使用
-            return base.CanUseItem(item);
+                fail = true; // 阻止破坏墙
         }
     }
+
 }
