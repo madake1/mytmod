@@ -1,0 +1,13 @@
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\bin\Debug\net8.0\madake1.deps.json
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\bin\Debug\net8.0\madake1.dll
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\bin\Debug\net8.0\madake1.pdb
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\obj\Debug\net8.0\madake1.csproj.AssemblyReference.cache
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\obj\Debug\net8.0\madake1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\obj\Debug\net8.0\madake1.AssemblyInfoInputs.cache
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\obj\Debug\net8.0\madake1.AssemblyInfo.cs
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\obj\Debug\net8.0\madake1.csproj.CoreCompileInputs.cache
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\obj\Debug\net8.0\madake1.sourcelink.json
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\obj\Debug\net8.0\madake1.dll
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\obj\Debug\net8.0\refint\madake1.dll
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\obj\Debug\net8.0\madake1.pdb
+C:\Users\ketui\Documents\My Games\Terraria\tModLoader\ModSources\madake1\obj\Debug\net8.0\ref\madake1.dll
