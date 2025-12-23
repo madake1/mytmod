@@ -8,6 +8,16 @@ Items: {
 		DisplayName: Gacha Machine Item
 		Tooltip: ""
 	}
+
+	JinQiu: {
+		DisplayName: Jin Qiu
+		Tooltip: ""
+	}
+
+	YuanShi: {
+		DisplayName: Yuan Shi
+		Tooltip: ""
+	}
 }
 
 Tiles.GachaMachineTile.MapEntry: Gacha Machine Tile

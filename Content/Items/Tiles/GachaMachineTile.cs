@@ -9,7 +9,7 @@ using madake1.Content.UI;
 using Terraria.Enums;
 using Terraria.ModLoader.IO; // 添加必要的命名空间
 
-namespace madake1.Content.Tiles
+namespace madake1.Content.Items.Tiles
 {
     public class GachaMachineTile : ModTile
     {
