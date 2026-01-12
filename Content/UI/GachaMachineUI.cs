@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 using madake1.Sets;
 using System;
 using ReLogic.Content;
+using System.Collections.Generic;
 
 namespace madake1.Content.UI
 {
@@ -15,8 +16,9 @@ namespace madake1.Content.UI
         public UIPanel mainPanel;
         public UIImageButton singleButton;
         public UIImageButton tenButton;
-        public UIImageButton closeButton; // 关闭按钮
-        private UIElement realGoldContainer;// 容器用于显示 RealGold 奖励
+        public UIImageButton closeButton;
+        private GachaMachineConfig currentMachine; // 保存当前扭蛋机数据
+        public List<UIImageButton> realGoldImages; // 显示大奖贴图
 
         public override void OnInitialize()
         {
@@ -100,7 +102,11 @@ namespace madake1.Content.UI
 
             mainPanel.Append(closeButton);
         }
-
+        // ================= 设置当前扭蛋机数据 =================
+        public void SetMachine(GachaMachineConfig machine)
+        {
+            currentMachine = machine;
+        }
 
 
     }

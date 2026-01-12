@@ -7,7 +7,8 @@ using Terraria.Localization;
 using Terraria.DataStructures;
 using madake1.Content.UI;
 using Terraria.Enums;
-using Terraria.ModLoader.IO; // 添加必要的命名空间
+using Terraria.ModLoader.IO;
+using madake1.Sets; // 添加必要的命名空间
 
 namespace madake1.Content.Items.Tiles
 {
@@ -36,14 +37,27 @@ namespace madake1.Content.Items.Tiles
             // AdjTiles = new int[] { TileID.Dresser };
         }
 
+
         public override bool RightClick(int i, int j)
         {
             if (Main.myPlayer == Main.LocalPlayer.whoAmI)
             {
-                ModContent.GetInstance<GachaUISystem>().ToggleUI(i,j);
+                var machine = GachaSystem.FindMachine(i, j);
+
+                if (machine != null)
+                {
+                    // 传给 UI
+                    Main.NewText("命中扭蛋机配置 ✅");
+                    ModContent.GetInstance<GachaUISystem>().OpenPanel(machine);
+                }
+                else
+                {
+                    Main.NewText("这里没有扭蛋机配置 ❌");
+                }
             }
             return true;
         }
+
     }
 
     public class GachaMachineItem : ModItem

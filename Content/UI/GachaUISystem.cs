@@ -2,7 +2,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria;
 using Microsoft.Xna.Framework;
-
+using madake1.Sets;
 namespace madake1.Content.UI
 {
     public class GachaUISystem : ModSystem
@@ -80,6 +80,18 @@ namespace madake1.Content.UI
                 uiTileX = -1;
                 uiTileY = -1;
             }
+        }
+        public void OpenPanel(GachaMachineConfig machine, int tileX = -1, int tileY = -1)
+        {
+            // 保存当前扭蛋机位置，用于距离检测
+            uiTileX = tileX;
+            uiTileY = tileY;
+
+            // 把奖励数据传给 UI 状态
+            GachaUIState.SetMachine(machine);
+
+            // 打开 UI
+            GachaUIInterface.SetState(GachaUIState);
         }
     }
 }
