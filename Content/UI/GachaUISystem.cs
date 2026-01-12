@@ -30,7 +30,7 @@ namespace madake1.Content.UI
             if (GachaUIInterface?.CurrentState != null && uiTileX >= 0 && uiTileY >= 0)
             {
                 Player player = Main.LocalPlayer;
-                float maxDistance = 300f; // 最大距离，可根据需要调整
+                float maxDistance = 100f; // 最大距离，可根据需要调整
 
                 Vector2 playerPos = player.Center;
                 Vector2 tilePos = new Vector2(uiTileX * 16 + 24, uiTileY * 16 + 24); 
@@ -43,6 +43,8 @@ namespace madake1.Content.UI
                     uiTileY = -1;
                 }
             }
+
+
 
             GachaUIInterface?.Update(gameTime);
         }

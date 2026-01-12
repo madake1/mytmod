@@ -18,6 +18,11 @@ Items: {
 		DisplayName: Yuan Shi
 		Tooltip: ""
 	}
+
+	Changli: {
+		DisplayName: Changli
+		Tooltip: ""
+	}
 }
 
 Tiles.GachaMachineTile.MapEntry: Gacha Machine Tile

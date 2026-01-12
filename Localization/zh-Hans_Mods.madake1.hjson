@@ -1,7 +1,7 @@
 Items: {
 	Jinxi: {
-		DisplayName: 今昔的记忆
-		Tooltip: 不嘻嘻
+		DisplayName: 武器1
+		Tooltip: 测试
 	}
 
 	GachaMachineItem: {
@@ -17,6 +17,11 @@ Items: {
 	YuanShi: {
 		DisplayName: 原石
 		// Tooltip: ""
+	}
+
+	Changli: {
+		DisplayName: 武器2
+		Tooltip: 测试
 	}
 }
 

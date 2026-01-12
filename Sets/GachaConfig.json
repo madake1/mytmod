@@ -1,0 +1,82 @@
+[
+  {
+    "centerX": 1957,
+    "centerY": 235,
+    "radius": 100,
+    "rewardsRealGold": [
+      {"item": "madake1.Content.Items.Weapons.Jinxi", "count": 1}
+    ],
+    "rewardsGold": [
+      {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
+      {"item": "Terraria.ID.ItemID.NightsEdge", "count": 1}
+    ],
+    "rewardsPurple": [
+
+      {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
+      {"item": "Terraria.ID.ItemID.SeafoamTrident", "count": 1},
+      {"item": "Terraria.ID.ItemID.MeteoriteSword", "count": 1}
+    ],
+    "rewardsBlue": [
+      {"item": "Terraria.ID.ItemID.FluorescentRod", "count": 10},
+      {"item": "Terraria.ID.ItemID.WoodenSword", "count": 50},
+      {"item": "Terraria.ID.ItemID.SignalFlare", "count": 10},
+      {"item": "Terraria.ID.ItemID.ShinePotion", "count": 2},
+      {"item": "Terraria.ID.ItemID.IronOre", "count": 5},
+      {"item": "Terraria.ID.ItemID.CopperOre", "count": 5}
+    ]
+  },
+  {
+    "centerX": 1989,
+    "centerY": 235,
+    "radius": 16,
+    "rewardsRealGold": [
+      {"item": "madake1.Content.Items.Weapons.Changli", "count": 1}
+    ],
+    "rewardsGold": [
+      {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
+      {"item": "Terraria.ID.ItemID.NightsEdge", "count": 1}
+    ],
+    "rewardsPurple": [
+      {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
+      {"item": "Terraria.ID.ItemID.SeafoamTrident", "count": 1},
+      {"item": "Terraria.ID.ItemID.MeteoriteSword", "count": 1}
+    ],
+    "rewardsBlue": [
+      {"item": "Terraria.ID.ItemID.FluorescentRod", "count": 10},
+      {"item": "Terraria.ID.ItemID.WoodenSword", "count": 50},
+      {"item": "Terraria.ID.ItemID.SignalFlare", "count": 10},
+      {"item": "Terraria.ID.ItemID.ShinePotion", "count": 2},
+      {"item": "Terraria.ID.ItemID.IronOre", "count": 5},
+      {"item": "Terraria.ID.ItemID.CopperOre", "count": 5}
+    ]
+  },
+  {
+    "centerX": 2028,
+    "centerY": 235,
+    "radius": 16,
+    "rewardsRealGold": [
+      {"item": "madake1.Content.Items.Weapons.Jinxi", "count": 1},
+      {"item": "madake1.Content.Items.Weapons.Changli", "count": 1}
+    ],
+    "rewardsGold": [
+      {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
+      {"item": "Terraria.ID.ItemID.NightsEdge", "count": 1}
+    ],
+    "rewardsPurple": [
+      {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
+      {"item": "Terraria.ID.ItemID.SeafoamTrident", "count": 1},
+      {"item": "Terraria.ID.ItemID.MeteoriteSword", "count": 1}
+    ],
+    "rewardsBlue": [
+      {"item": "Terraria.ID.ItemID.FluorescentRod", "count": 10},
+      {"item": "Terraria.ID.ItemID.WoodenSword", "count": 50},
+      {"item": "Terraria.ID.ItemID.SignalFlare", "count": 10},
+      {"item": "Terraria.ID.ItemID.ShinePotion", "count": 2},
+      {"item": "Terraria.ID.ItemID.IronOre", "count": 5},
+      {"item": "Terraria.ID.ItemID.CopperOre", "count": 5}
+    ]
+  }
+]

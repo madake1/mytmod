@@ -9,7 +9,7 @@ namespace madake1.Sets
     public class SeedLockTile : GlobalTile
     {
         // private bool IsLockedWorld => true;
-        private bool IsLockedWorld => Main.ActiveWorldFileData.Seed == 1897520328;
+        private bool IsLockedWorld => Main.ActiveWorldFileData.Seed == 20260111;
 
 
         // 禁止破坏方块（家具也在这里）
@@ -47,7 +47,7 @@ namespace madake1.Sets
 
     public class SeedLockWall : GlobalWall
     {
-        private bool IsLockedWorld => Main.ActiveWorldFileData.Seed == 1897520328;
+        private bool IsLockedWorld => Main.ActiveWorldFileData.Seed == 20260111;
 
         public override void KillWall(int i, int j, int type, ref bool fail)
         {
