@@ -66,6 +66,12 @@ public class RewardDisplayItem : UIElement
         // 物品贴图
         if (DisplayItem.type > Terraria.ID.ItemID.None && DisplayItem.type < TextureAssets.Item.Length)
         {
+            // 确保texture已加载（特别是原版物品）
+            if (TextureAssets.Item[DisplayItem.type].State == ReLogic.Content.AssetState.NotLoaded)
+            {
+                Main.instance.LoadItem(DisplayItem.type);
+            }
+            
             Texture2D texture = TextureAssets.Item[DisplayItem.type].Value;
             if (texture != null && texture.Width > 1 && texture.Height > 1) // 检查texture是否有效
             {
@@ -108,28 +114,20 @@ public class RewardDisplayItem : UIElement
                 0.7f
             );
         }
+        
+        // 在Draw中处理悬停tooltip（关键：必须在Draw中设置）
+        if (IsMouseHovering)
+        {
+            Main.LocalPlayer.mouseInterface = true;
+            Main.HoverItem = DisplayItem.Clone();
+            Main.hoverItemName = DisplayItem.Name;
+        }
     }
 
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-
-        // Hover 显示 Tooltip（关键）
-        // #region agent log
-        if (IsMouseHovering)
-        {
-            Log("RewardDisplayItem.cs:Update", "Mouse hovering", new { itemType = DisplayItem.type, itemName = DisplayItem.Name, itemIsNull = DisplayItem == null }, "G");
-        }
-        // #endregion
-        if (IsMouseHovering)
-        {
-            Main.LocalPlayer.mouseInterface = true; // 关键：必须设置这个才能显示tooltip
-            Main.HoverItem = DisplayItem.Clone();
-            Main.hoverItemName = DisplayItem.Name;
-            // #region agent log
-            Log("RewardDisplayItem.cs:Update", "HoverItem set", new { hoverItemType = Main.HoverItem.type, hoverItemName = Main.hoverItemName, mouseInterface = Main.LocalPlayer.mouseInterface }, "G");
-            // #endregion
-        }
+        // 悬停处理已移到Draw方法中
     }
 
     public override void LeftClick(UIMouseEvent evt)
