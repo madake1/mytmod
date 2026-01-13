@@ -5,9 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using madake1.Sets;
-using System;
-using ReLogic.Content;
 using System.Collections.Generic;
+using Madake1.Content.UI;
 
 namespace madake1.Content.UI
 {
@@ -17,8 +16,13 @@ namespace madake1.Content.UI
         public UIImageButton singleButton;
         public UIImageButton tenButton;
         public UIImageButton closeButton;
-        private GachaMachineConfig currentMachine; // 保存当前扭蛋机数据
-        public List<UIImageButton> realGoldImages; // 显示大奖贴图
+
+        // ===== 大奖展示列表 =====
+        private UIList rewardList;
+        private UIScrollbar rewardScrollbar;
+        private UIPanel rewardPanel;
+
+        private GachaMachineConfig currentMachine;
 
         public override void OnInitialize()
         {
@@ -31,6 +35,7 @@ namespace madake1.Content.UI
             mainPanel.Height.Set(256f, 0f);
             mainPanel.BackgroundColor = Color.Transparent;
             mainPanel.BorderColor = Color.Transparent;
+            Append(mainPanel);
 
             // ================= 面板背景 =================
             UIImage panelBackground = new UIImage(
@@ -40,7 +45,28 @@ namespace madake1.Content.UI
             panelBackground.Height.Set(0f, 1f);
             mainPanel.Append(panelBackground);
 
-            Append(mainPanel);
+            // ================= 大奖展示区域 =================
+            rewardPanel = new UIPanel();
+            rewardPanel.Left.Set(20f, 0f);
+            rewardPanel.Top.Set(20f, 0f);
+            rewardPanel.Width.Set(200f, 0f);
+            rewardPanel.Height.Set(120f, 0f);
+            rewardPanel.BackgroundColor = new Color(0, 0, 0, 120);
+            rewardPanel.BorderColor = Color.Gold;
+            mainPanel.Append(rewardPanel);
+
+            rewardList = new UIList();
+            rewardList.Width.Set(-20f, 1f);
+            rewardList.Height.Set(0f, 1f);
+            rewardList.ListPadding = 6f;
+            rewardPanel.Append(rewardList);
+
+            rewardScrollbar = new UIScrollbar();
+            rewardScrollbar.Height.Set(0f, 1f);
+            rewardScrollbar.Left.Set(-20f, 1f);
+            rewardPanel.Append(rewardScrollbar);
+
+            rewardList.SetScrollbar(rewardScrollbar);
 
             // ================= 按钮容器 =================
             UIElement buttonContainer = new UIElement();
@@ -48,16 +74,11 @@ namespace madake1.Content.UI
             float buttonHeight = 30f;
             float spacing = 12f;
 
-            float containerWidth = buttonWidth * 2 + spacing;
-            float containerHeight = buttonHeight;
-
-            buttonContainer.Width.Set(containerWidth, 0f);
-            buttonContainer.Height.Set(containerHeight, 0f);
-
-            buttonContainer.HAlign = 0.5f; // 水平居中
-            buttonContainer.VAlign = 1f;   // 底部对齐
-            buttonContainer.Top.Set(-10f, 0f); // 向上偏移 10 像素
-
+            buttonContainer.Width.Set(buttonWidth * 2 + spacing, 0f);
+            buttonContainer.Height.Set(buttonHeight, 0f);
+            buttonContainer.HAlign = 0.5f;
+            buttonContainer.VAlign = 1f;
+            buttonContainer.Top.Set(-10f, 0f);
             mainPanel.Append(buttonContainer);
 
             // ================= 单抽按钮 =================
@@ -66,8 +87,7 @@ namespace madake1.Content.UI
             );
             singleButton.Width.Set(buttonWidth, 0f);
             singleButton.Height.Set(buttonHeight, 0f);
-            singleButton.Left.Set(0f, 0f);
-            singleButton.Top.Set(0f, 0f);
+            buttonContainer.Append(singleButton);
 
             // ================= 十连按钮 =================
             tenButton = new UIImageButton(
@@ -75,39 +95,58 @@ namespace madake1.Content.UI
             );
             tenButton.Width.Set(buttonWidth, 0f);
             tenButton.Height.Set(buttonHeight, 0f);
-            tenButton.Left.Set(buttonWidth + spacing, 0f); // 紧跟单抽按钮 + 间距
-            tenButton.Top.Set(0f, 0f);
-
-            buttonContainer.Append(singleButton);
+            tenButton.Left.Set(buttonWidth + spacing, 0f);
             buttonContainer.Append(tenButton);
 
             // ================= 关闭按钮 =================
-            closeButton = new UIImageButton(ModContent.Request<Texture2D>("madake1/Content/UI/guanbi"));
-            closeButton.Width.Set(30f, 0f);  // 贴图宽度
-            closeButton.Height.Set(30f, 0f); // 贴图高度
-
-            // 放在右上角，距离边框 8 像素
-            closeButton.Left.Set(mainPanel.Width.Pixels - 30f - 8f, 0f);
+            closeButton = new UIImageButton(
+                ModContent.Request<Texture2D>("madake1/Content/UI/guanbi")
+            );
+            closeButton.Width.Set(30f, 0f);
+            closeButton.Height.Set(30f, 0f);
+            closeButton.Left.Set(mainPanel.Width.Pixels - 38f, 0f);
             closeButton.Top.Set(8f, 0f);
 
-            // 点击关闭 UI
             closeButton.OnLeftClick += (evt, elm) =>
             {
-                var gachaSystem = ModContent.GetInstance<GachaUISystem>();
-                if (gachaSystem.GachaUIInterface.CurrentState != null)
-                {
-                    gachaSystem.GachaUIInterface.SetState(null);
-                }
+                var system = ModContent.GetInstance<GachaUISystem>();
+                system.GachaUIInterface.SetState(null);
             };
 
             mainPanel.Append(closeButton);
         }
-        // ================= 设置当前扭蛋机数据 =================
+
+        // ================= 设置当前扭蛋机 & 加载大奖展示 =================
         public void SetMachine(GachaMachineConfig machine)
         {
             currentMachine = machine;
+
+            if (rewardList == null) // UI还没初始化
+                return;
+
+            rewardList.Clear();
+
+            if (currentMachine == null || currentMachine.rewardsRealGold == null)
+                return;
+
+            foreach (var reward in currentMachine.rewardsRealGold)
+            {
+                // 先解析 ItemType
+                reward.ParseItemType();
+
+                Item item = new Item();
+                item.SetDefaults(reward.itemType); // 这里必须是 int
+
+                RewardDisplayItem uiItem =
+                    new RewardDisplayItem(
+                        item,
+                        reward.count,
+                        Color.Gold,
+                        selectable: true
+                    );
+
+                rewardList.Add(uiItem);
+            }
         }
-
-
     }
 }
