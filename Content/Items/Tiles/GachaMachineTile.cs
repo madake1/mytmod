@@ -46,9 +46,9 @@ namespace madake1.Content.Items.Tiles
 
                 if (machine != null)
                 {
-                    // 传给 UI
-                    Main.NewText("命中扭蛋机配置 ✅");
-                    ModContent.GetInstance<GachaUISystem>().OpenPanel(machine);
+                    var ui = ModContent.GetInstance<GachaUISystem>();
+                    ui.OpenPanel(machine, i, j);
+                    ui.ToggleUI(i, j);
                 }
                 else
                 {

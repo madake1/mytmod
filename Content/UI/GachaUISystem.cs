@@ -90,8 +90,7 @@ namespace madake1.Content.UI
             // 把奖励数据传给 UI 状态
             GachaUIState.SetMachine(machine);
 
-            // 打开 UI
-            GachaUIInterface.SetState(GachaUIState);
+
         }
     }
 }
