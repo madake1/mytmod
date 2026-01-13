@@ -38,8 +38,9 @@ public class RewardDisplayItem : UIElement
         Selectable = selectable;
         backgroundColor = bgColor;
 
-        Width.Set(60f, 0f);
-        Height.Set(60f, 0f);
+        Width.Set(50f, 0f);
+        Height.Set(50f, 0f);
+        
     }
 
     public override void Draw(SpriteBatch spriteBatch)
@@ -53,14 +54,22 @@ public class RewardDisplayItem : UIElement
             backgroundColor * 0.8f
         );
 
-        // 选中高亮
+        // 选中高亮（更明显）
         if (Selected)
         {
+            Rectangle rect = dims.ToRectangle();
+            // 使用更亮的颜色和更大的透明度作为背景
             spriteBatch.Draw(
                 TextureAssets.MagicPixel.Value,
-                dims.ToRectangle(),
-                Color.Yellow * 0.3f
+                rect,
+                Color.Yellow * 0.6f // 从0.3f增加到0.6f，更明显
             );
+            // 绘制四个边框（更粗的边框，3像素）
+            int borderWidth = 3;
+            spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rect.X, rect.Y, rect.Width, borderWidth), Color.Yellow); // 上
+            spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rect.X, rect.Y + rect.Height - borderWidth, rect.Width, borderWidth), Color.Yellow); // 下
+            spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rect.X, rect.Y, borderWidth, rect.Height), Color.Yellow); // 左
+            spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rect.X + rect.Width - borderWidth, rect.Y, borderWidth, rect.Height), Color.Yellow); // 右
         }
 
         // 物品贴图
@@ -103,15 +112,27 @@ public class RewardDisplayItem : UIElement
             }
         }
 
-        // 数量
-        if (Count > 1)
+        // 数量显示（总是显示，不只是>1时）
+        if (Count > 0)
         {
+            // 在右上角显示数量
+            string countText = Count.ToString();
+            Vector2 textPos = new Vector2(dims.X + dims.Width - 20f, dims.Y + 2f);
+            // 绘制背景（黑色半透明）使文字更清晰
             Utils.DrawBorderString(
                 spriteBatch,
-                $"x{Count}",
-                new Vector2(dims.X + 4, dims.Y + 38),
+                countText,
+                textPos + new Vector2(1f, 1f),
+                Color.Black * 0.8f,
+                0.8f
+            );
+            // 绘制文字
+            Utils.DrawBorderString(
+                spriteBatch,
+                countText,
+                textPos,
                 Color.White,
-                0.7f
+                0.8f
             );
         }
         
@@ -132,9 +153,11 @@ public class RewardDisplayItem : UIElement
 
     public override void LeftClick(UIMouseEvent evt)
     {
+        // 移除这里的处理，让父类GachaMachineUI的SelectRewardItem方法来处理单选逻辑
+        // 这样确保只能选中一个
         if (!Selectable)
             return;
-
-        Selected = !Selected;
+        
+        // 不在这里处理Selected状态，由父类统一管理
     }
 }

@@ -4,8 +4,17 @@
     "centerY": 235,
     "radius": 16,
     "rewardsRealGold": [
-      {"item": "Jinxi", "count": 1},
+      {"item": "Jinxi", "count": 5},
+      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
+      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
       {"item": "Terraria.ID.ItemID.Sandgun", "count": 1}
+      
     ],
     "rewardsGold": [
       {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},

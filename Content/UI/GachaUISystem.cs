@@ -94,7 +94,7 @@ namespace madake1.Content.UI
             if (GachaUIInterface.CurrentState == null)
             {
                 // #region agent log
-                Log("GachaUISystem.cs:ToggleUI", "Setting UI state", new { rewardListIsNull = GachaUIState?.rewardList == null }, "A");
+                Log("GachaUISystem.cs:ToggleUI", "Setting UI state", new { }, "A");
                 // #endregion
                 GachaUIInterface.SetState(GachaUIState);
                 uiTileX = tileX;
@@ -147,7 +147,7 @@ namespace madake1.Content.UI
             {
                 // 把奖励数据传给 UI 状态
                 // #region agent log
-                Log("GachaUISystem.cs:OpenPanel", "Before SetMachine", new { rewardListIsNull = GachaUIState?.rewardList == null }, "A");
+                Log("GachaUISystem.cs:OpenPanel", "Before SetMachine", new { }, "A");
                 // #endregion
                 GachaUIState.SetMachine(machine);
                 // #region agent log

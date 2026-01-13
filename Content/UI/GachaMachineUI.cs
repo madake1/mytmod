@@ -22,31 +22,14 @@ namespace madake1.Content.UI
         public UIImageButton closeButton;
 
         // ===== 大奖展示列表 =====
-        public UIList rewardList;
-        private UIScrollbar rewardScrollbar;
+        private UIElement rewardContainer; // 容器用于网格布局
         private UIPanel rewardPanel;
-
+        private UIText rewardTitleText; // "大奖"文字标签
         private GachaMachineConfig currentMachine;
-        
-        // #region agent log
-        private static void Log(string location, string message, object data, string hypothesisId = "")
-        {
-            try
-            {
-                string logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Terraria", "tModLoader", "ModSources", ".cursor", "debug.log");
-                Directory.CreateDirectory(Path.GetDirectoryName(logPath));
-                var logEntry = new { sessionId = "debug-session", runId = "run1", hypothesisId, location, message, data, timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() };
-                File.AppendAllText(logPath, Newtonsoft.Json.JsonConvert.SerializeObject(logEntry) + "\n");
-            }
-            catch { }
-        }
-        // #endregion
-
+        private RewardDisplayItem selectedRewardItem; // 当前选中的奖励项（单选）
         public override void OnInitialize()
         {
-            // #region agent log
-            Log("GachaMachineUI.cs:OnInitialize", "OnInitialize called", new { }, "A");
-            // #endregion
+
             // ================= 主面板 =================
             mainPanel = new UIPanel();
             mainPanel.SetPadding(0);
@@ -68,30 +51,34 @@ namespace madake1.Content.UI
 
             // ================= 大奖展示区域 =================
             rewardPanel = new UIPanel();
-            rewardPanel.Left.Set(20f, 0f);
-            rewardPanel.Top.Set(20f, 0f);
-            rewardPanel.Width.Set(200f, 0f);
-            rewardPanel.Height.Set(120f, 0f);
+            rewardPanel.Left.Set(10f, 0f);
+            rewardPanel.Top.Set(35f, 0f);
+            // 计算：5列 * 60 + 4个间距 * 10 + 左右padding 20 = 300 + 40 + 20 = 360
+            // 但需要更大的边距，所以设为380
+            rewardPanel.Width.Set(380f, 0f);
+            // 计算：文字标签30 + 2行 * 60 + 1个间距 * 10 + 上下padding 20 = 30 + 120 + 10 + 20 = 180
+            rewardPanel.Height.Set(180f, 0f);
             rewardPanel.BackgroundColor = new Color(0, 0, 0, 120);
             rewardPanel.BorderColor = Color.Gold;
             mainPanel.Append(rewardPanel);
 
-            rewardList = new UIList();
-            rewardList.Width.Set(-20f, 1f);
-            rewardList.Height.Set(0f, 1f);
-            rewardList.ListPadding = 6f;
-            rewardPanel.Append(rewardList);
+            // "大奖"文字标签
+            rewardTitleText = new UIText("大奖");
+            rewardTitleText.Left.Set(10f, 0f);
+            rewardTitleText.Top.Set(10f, 0f);
+            rewardTitleText.TextColor = Color.Gold;
+            mainPanel.Append(rewardTitleText);
 
-            rewardScrollbar = new UIScrollbar();
-            rewardScrollbar.Height.Set(0f, 1f);
-            rewardScrollbar.Left.Set(-20f, 1f);
-            rewardPanel.Append(rewardScrollbar);
-
-            rewardList.SetScrollbar(rewardScrollbar);
+            // 奖励项容器（网格布局）
+            rewardContainer = new UIElement();
+            rewardContainer.Left.Set(10f, 0f);
+            rewardContainer.Top.Set(15f, 0f); // 文字下方
+            // 5列 * 60 + 4个间距 * 10 = 300 + 40 = 340
+            rewardContainer.Width.Set(350f, 0f); // 增加宽度以容纳所有项
+            // 2行 * 60 + 1个间距 * 10 = 120 + 10 = 130
+            rewardContainer.Height.Set(140f, 0f);
+            rewardPanel.Append(rewardContainer);
             
-            // #region agent log
-            Log("GachaMachineUI.cs:OnInitialize", "rewardList initialized", new { rewardListIsNull = rewardList == null }, "A");
-            // #endregion
 
             // ================= 按钮容器 =================
             UIElement buttonContainer = new UIElement();
@@ -144,75 +131,94 @@ namespace madake1.Content.UI
         // ================= 设置当前扭蛋机 & 加载大奖展示 =================
         public void SetMachine(GachaMachineConfig machine)
         {
-            // #region agent log
-            Log("GachaMachineUI.cs:SetMachine", "SetMachine entry", new { machineIsNull = machine == null, rewardListIsNull = rewardList == null, rewardsCount = machine?.rewardsRealGold?.Count ?? 0 }, "A");
-            // #endregion
-            currentMachine = machine;
 
-            if (rewardList == null) // UI还没初始化
+            currentMachine = machine;
+            selectedRewardItem = null; // 重置选中状态
+            UpdateRewardTitleText(); // 重置文字为"大奖"
+            if (rewardContainer == null) // UI还没初始化
             {
-                // #region agent log
-                Log("GachaMachineUI.cs:SetMachine", "rewardList is null, returning early", new { }, "A");
-                // #endregion
                 return;
             }
-
-            rewardList.Clear();
+            rewardContainer.RemoveAllChildren(); // 清空容器
 
             if (currentMachine == null || currentMachine.rewardsRealGold == null)
             {
-                // #region agent log
-                Log("GachaMachineUI.cs:SetMachine", "machine or rewardsRealGold is null", new { machineIsNull = currentMachine == null, rewardsIsNull = currentMachine?.rewardsRealGold == null }, "A");
-                // #endregion
                 return;
             }
 
-            // #region agent log
-            Log("GachaMachineUI.cs:SetMachine", "Starting reward loop", new { rewardsCount = currentMachine.rewardsRealGold.Count }, "A");
-            // #endregion
+            // 网格布局：2行5列
+            int columns = 5;
+            int rows = 2;
+            float itemSize = 60f;
+            float spacing = 10f;
+            int index = 0;
+            
             foreach (var reward in currentMachine.rewardsRealGold)
             {
-                // 先解析 ItemType
-                // #region agent log
-                Log("GachaMachineUI.cs:SetMachine", "Before ParseItemType", new { item = reward.item, itemType = reward.itemType }, "D");
-                // #endregion
+                if (index >= rows * columns) break; // 最多显示10个（2行5列）
                 reward.ParseItemType();
-                // #region agent log
-                Log("GachaMachineUI.cs:SetMachine", "After ParseItemType", new { item = reward.item, itemType = reward.itemType }, "D");
-                // #endregion
-                
-
-
                 Item item = new Item();
-                // #region agent log
-                Log("GachaMachineUI.cs:SetMachine", "Item created", new { itemTypeBeforeSetDefaults = item.type, rewardItemType = reward.itemType }, "E");
-                // #endregion
+                item.SetDefaults(reward.itemType);
+                RewardDisplayItem uiItem = new RewardDisplayItem(
+                    item,
+                    reward.count,
+                    Color.Gold,
+                    selectable: true
+                );
                 
-                item.SetDefaults(reward.itemType); // 这里必须是 int
-                // #region agent log
-                Log("GachaMachineUI.cs:SetMachine", "After SetDefaults", new { itemType = item.type, itemName = item.Name, rewardItemType = reward.itemType }, "E");
-                // #endregion
+                // 计算网格位置
+                int col = index % columns;
+                int row = index / columns;
+                uiItem.Left.Set(col * (itemSize + spacing), 0f);
+                uiItem.Top.Set(row * (itemSize + spacing), 0f);
                 
-                var tex = TextureAssets.Item[item.type].Value;
-                Console.WriteLine($"Texture fetched for {item.Name}: {tex.Width}x{tex.Height}");
-                Console.WriteLine($"Item: {reward.item}, Type: {reward.itemType}");
-
-                RewardDisplayItem uiItem =
-                    new RewardDisplayItem(
-                        item,
-                        reward.count,
-                        Color.Gold,
-                        selectable: true
-                    );
-
-                rewardList.Add(uiItem);
-                // #region agent log
-                Log("GachaMachineUI.cs:SetMachine", "Item added to list", new { itemType = item.type, itemName = item.Name }, "A");
-                // #endregion
+                // 设置点击事件，实现单选
+                uiItem.OnLeftClick += (evt, elm) => {
+                    SelectRewardItem(uiItem);
+                };
+                rewardContainer.Append(uiItem);              
+                index++;
             }
-            // #region agent log
-            Log("GachaMachineUI.cs:SetMachine", "SetMachine exit", new { itemsAdded = currentMachine.rewardsRealGold.Count }, "A");
-            // #endregion
+           
+        }
+        
+        // 单选奖励项
+        private void SelectRewardItem(RewardDisplayItem item)
+        {
+            // 如果点击的是已选中的项，则取消选中
+            if (selectedRewardItem == item && item.Selected)
+            {
+                item.Selected = false;
+                selectedRewardItem = null;
+                UpdateRewardTitleText(); // 更新文字为"大奖"
+                return;
+            }
+            
+            // 取消之前选中的项
+            if (selectedRewardItem != null && selectedRewardItem != item)
+            {
+                selectedRewardItem.Selected = false;
+            }
+            
+            // 选中新项
+            selectedRewardItem = item;
+            item.Selected = true;
+            UpdateRewardTitleText(); // 更新文字为"已选择：大奖名"
+        }
+        
+        // 更新奖励标题文字
+        private void UpdateRewardTitleText()
+        {
+            if (rewardTitleText == null) return;
+            
+            if (selectedRewardItem != null && selectedRewardItem.Selected)
+            {
+                rewardTitleText.SetText($"已定轨：{selectedRewardItem.DisplayItem.Name}");
+            }
+            else
+            {
+                rewardTitleText.SetText("本期UP！");
+            }
         }
     }
 }
