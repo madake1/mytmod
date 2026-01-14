@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader;
@@ -7,7 +8,6 @@ public class GachaPlayer : ModPlayer
 {
     // key = machineId（由 json 的 centerX+centerY 生成）
     public Dictionary<string, GachaMachineData> machineData = new();
-
     public GachaMachineData GetData(string machineId)
     {
         if (!machineData.TryGetValue(machineId, out var data))
@@ -42,6 +42,33 @@ public class GachaPlayer : ModPlayer
             var data = GachaMachineData.Load(entry);
             machineData[data.machineId] = data;
         }
+    }
+    // ===================== 获取/设置选中的大奖 =====================
+    // 设置玩家选中的大奖 itemType
+    public void SetSelectedReward(string machineId, int itemType)
+    {
+        var data = GetData(machineId);
+        data.selectedUpItemType = itemType;
+    }
+
+    // 获取玩家当前选中的大奖 itemType（如果没选，返回 null）
+    public int? GetSelectedReward(string machineId)
+    {
+        var data = GetData(machineId);
+        return data.selectedUpItemType > 0 ? (int?)data.selectedUpItemType : null;
+    }
+
+    // 检查当前大保底是否激活
+    public bool IsUpGuaranteeActive(string machineId)
+    {
+        var data = GetData(machineId);
+        return data.upGuaranteeActive;
+    }
+
+    public void SetUpGuarantee(string machineId, bool active)
+    {
+        var data = GetData(machineId);
+        data.upGuaranteeActive = active;
     }
 }
 
@@ -84,4 +111,5 @@ public class GachaMachineData
             upGuaranteeActive = tag.GetBool("upGuaranteeActive")
         };
     }
+    
 }

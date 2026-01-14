@@ -12,7 +12,7 @@
       {"item": "Terraria.ID.ItemID.Muramasa", "count": 1}
     ],
     "rewardsPurple": [
-      {"item": "Terraria.ID.ItemID.BalloonToilet", "count": 1}
+      {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1}
     ],
     "rewardsBlue": [
       {"item": "Terraria.ID.ItemID.WoodenSword", "count": 1}
@@ -32,7 +32,7 @@
       {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1}
     ],
     "rewardsBlue": [
-      {"item": "Terraria.ID.ItemID.CopperOre", "count": 5}
+      {"item": "Terraria.ID.ItemID.EbonwoodSword", "count": 1}
     ]
   },
   {
@@ -44,13 +44,13 @@
       {"item": "Changli", "count": 1}
     ],
     "rewardsGold": [
-      {"item": "Terraria.ID.ItemID.Shotgun", "count": 1}
+      {"item": "Terraria.ID.ItemID.CoinGun", "count": 1}
     ],
     "rewardsPurple": [
-      {"item": "Terraria.ID.ItemID.AshWoodChest", "count": 1}
+      {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1}
     ],
     "rewardsBlue": [
-      {"item": "Terraria.ID.ItemID.BambooChair", "count": 10}
+      {"item": "Terraria.ID.ItemID.PearlwoodSword", "count": 10}
     ]
   }
 ]

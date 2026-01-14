@@ -80,7 +80,7 @@ namespace madake1.Content.UI
             // 2行 * 60 + 1个间距 * 10 = 120 + 10 = 130
             rewardContainer.Height.Set(140f, 0f);
             rewardPanel.Append(rewardContainer);
-            
+
 
             // ================= 按钮容器 =================
             UIElement buttonContainer = new UIElement();
@@ -111,8 +111,8 @@ namespace madake1.Content.UI
                 // 下一步才会调用 GachaService
                 // 仅测试：输出日志
                 var results = GachaService.DoPull(player, currentMachine, 1);
-                foreach (var r in results)
-                    Main.NewText($"抽到：{r.itemType} 数量：{r.stack} 品质：{r.quality}");
+                // foreach (var r in results)
+                    
             };
 
 
@@ -133,8 +133,8 @@ namespace madake1.Content.UI
                 // 仅测试：输出日志
                 var results = GachaService.DoPull(player, currentMachine, 10);
 
-                foreach (var r in results)
-                    Main.NewText($"抽到：{r.itemType} 数量：{r.stack} 品质：{r.quality}");
+                // foreach (var r in results)
+
 
             };
 
@@ -180,7 +180,7 @@ namespace madake1.Content.UI
             float itemSize = 60f;
             float spacing = 10f;
             int index = 0;
-            
+
             foreach (var reward in currentMachine.rewardsRealGold)
             {
                 if (index >= rows * columns) break; // 最多显示10个（2行5列）
@@ -193,52 +193,61 @@ namespace madake1.Content.UI
                     Color.Gold,
                     selectable: true
                 );
-                
+
                 // 计算网格位置
                 int col = index % columns;
                 int row = index / columns;
                 uiItem.Left.Set(col * (itemSize + spacing), 0f);
                 uiItem.Top.Set(row * (itemSize + spacing), 0f);
-                
+
                 // 设置点击事件，实现单选
-                uiItem.OnLeftClick += (evt, elm) => {
+                uiItem.OnLeftClick += (evt, elm) =>
+                {
                     SelectRewardItem(uiItem);
                 };
-                rewardContainer.Append(uiItem);              
+                rewardContainer.Append(uiItem);
                 index++;
             }
-           
+
         }
-        
+
         // ================ 选择奖励项（单选逻辑） =================
         private void SelectRewardItem(RewardDisplayItem item)
-        {
-            // 如果点击的是已选中的项，则取消选中
-            if (selectedRewardItem == item && item.Selected)
-            {
-                item.Selected = false;
-                selectedRewardItem = null;
-                UpdateRewardTitleText(); // 更新文字为"大奖"
-                return;
-            }
-            
-            // 取消之前选中的项
-            if (selectedRewardItem != null && selectedRewardItem != item)
-            {
-                selectedRewardItem.Selected = false;
-            }
-            
-            // 选中新项
-            selectedRewardItem = item;
-            item.Selected = true;
-            UpdateRewardTitleText(); // 更新文字为"已选择：大奖名"
-        }
-        
+{
+    Player player = Main.LocalPlayer; // 确保有玩家对象
+    string machineId = currentMachine.GetMachineId(); // 当前扭蛋机ID
+
+    // 如果点击的是已选中的项，则取消选中
+    if (selectedRewardItem == item && item.Selected)
+    {
+        item.Selected = false;
+        selectedRewardItem = null;
+        UpdateRewardTitleText(); // 更新文字为"大奖"
+        player.GetModPlayer<GachaPlayer>().SetSelectedReward(machineId, -1);
+        return;
+    }
+
+    // 取消之前选中的项
+    if (selectedRewardItem != null && selectedRewardItem != item)
+    {
+        selectedRewardItem.Selected = false;
+    }
+
+    // 选中新项
+    selectedRewardItem = item;
+    item.Selected = true;
+    UpdateRewardTitleText(); // 更新文字为"已选择：大奖名"
+
+    // 把选中的大奖保存到玩家数据
+    int selectedItemType = item.DisplayItem.type; // 这里确保获取正确的 itemType
+    player.GetModPlayer<GachaPlayer>().SetSelectedReward(machineId, selectedItemType);
+}
+
         // ================== 更新大奖文字 =================
         private void UpdateRewardTitleText()
         {
             if (rewardTitleText == null) return;
-            
+
             if (selectedRewardItem != null && selectedRewardItem.Selected)
             {
                 rewardTitleText.SetText($"已定轨：{selectedRewardItem.DisplayItem.Name}");
