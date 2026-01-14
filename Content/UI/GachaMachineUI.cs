@@ -33,7 +33,8 @@ namespace madake1.Content.UI
         {
 
             // ================= 主面板 =================
-            mainPanel = new UIPanel();
+            // mainPanel = new UIPanel();//下面的是可拖动的面板
+            mainPanel = new DraggableUIPanel();
             mainPanel.SetPadding(0);
             mainPanel.Left.Set(400f, 0f);
             mainPanel.Top.Set(200f, 0f);
