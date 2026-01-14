@@ -8,6 +8,7 @@ public class GachaPlayer : ModPlayer
 {
     // key = machineId（由 json 的 centerX+centerY 生成）
     public Dictionary<string, GachaMachineData> machineData = new();
+
     public GachaMachineData GetData(string machineId)
     {
         if (!machineData.TryGetValue(machineId, out var data))
@@ -23,7 +24,6 @@ public class GachaPlayer : ModPlayer
 
     public override void SaveData(TagCompound tag)
     {
-        // Dictionary -> List<TagCompound> 进行存储
         var list = machineData.Values.Select(d => d.Save()).ToList();
         tag["machineData"] = list;
     }
@@ -43,22 +43,23 @@ public class GachaPlayer : ModPlayer
             machineData[data.machineId] = data;
         }
     }
+
     // ===================== 获取/设置选中的大奖 =====================
-    // 设置玩家选中的大奖 itemType
-    public void SetSelectedReward(string machineId, int itemType)
+    // 设置玩家选中的大奖索引（0-based），-1表示未选
+    public void SetSelectedReward(string machineId, int index)
     {
         var data = GetData(machineId);
-        data.selectedUpItemType = itemType;
+        data.selectedUpIndex = index;
     }
 
-    // 获取玩家当前选中的大奖 itemType（如果没选，返回 null）
+    // 获取玩家当前选中的大奖索引（如果没选，返回 null）
     public int? GetSelectedReward(string machineId)
     {
         var data = GetData(machineId);
-        return data.selectedUpItemType > 0 ? (int?)data.selectedUpItemType : null;
+        return data.selectedUpIndex >= 0 ? (int?)data.selectedUpIndex : null;
     }
 
-    // 检查当前大保底是否激活
+    // ===================== 大保底状态 =====================
     public bool IsUpGuaranteeActive(string machineId)
     {
         var data = GetData(machineId);
@@ -81,7 +82,7 @@ public class GachaMachineData
     public int pullsSinceLastGold;
     public int pullsSinceLastPurple;
 
-    public int selectedUpItemType = -1;
+    public int selectedUpIndex = -1; // 改为列表索引，-1 表示未选中
     public bool upGuaranteeActive;
 
     // 保存成 TagCompound
@@ -93,7 +94,7 @@ public class GachaMachineData
             ["totalPullCount"] = totalPullCount,
             ["pullsSinceLastGold"] = pullsSinceLastGold,
             ["pullsSinceLastPurple"] = pullsSinceLastPurple,
-            ["selectedUpItemType"] = selectedUpItemType,
+            ["selectedUpIndex"] = selectedUpIndex,
             ["upGuaranteeActive"] = upGuaranteeActive
         };
     }
@@ -107,9 +108,8 @@ public class GachaMachineData
             totalPullCount = tag.GetInt("totalPullCount"),
             pullsSinceLastGold = tag.GetInt("pullsSinceLastGold"),
             pullsSinceLastPurple = tag.GetInt("pullsSinceLastPurple"),
-            selectedUpItemType = tag.GetInt("selectedUpItemType"),
+            selectedUpIndex = tag.GetInt("selectedUpIndex"),
             upGuaranteeActive = tag.GetBool("upGuaranteeActive")
         };
     }
-    
 }

@@ -112,7 +112,7 @@ namespace madake1.Content.UI
                 // 仅测试：输出日志
                 var results = GachaService.DoPull(player, currentMachine, 1);
                 // foreach (var r in results)
-                    
+
             };
 
 
@@ -213,35 +213,41 @@ namespace madake1.Content.UI
 
         // ================ 选择奖励项（单选逻辑） =================
         private void SelectRewardItem(RewardDisplayItem item)
-{
-    Player player = Main.LocalPlayer; // 确保有玩家对象
-    string machineId = currentMachine.GetMachineId(); // 当前扭蛋机ID
+        {
+            Player player = Main.LocalPlayer; // 确保有玩家对象
+            string machineId = currentMachine.GetMachineId(); // 当前扭蛋机ID
 
-    // 如果点击的是已选中的项，则取消选中
-    if (selectedRewardItem == item && item.Selected)
-    {
-        item.Selected = false;
-        selectedRewardItem = null;
-        UpdateRewardTitleText(); // 更新文字为"大奖"
-        player.GetModPlayer<GachaPlayer>().SetSelectedReward(machineId, -1);
-        return;
-    }
+            // 如果点击的是已选中的项，则取消选中
+            if (selectedRewardItem == item && item.Selected)
+            {
+                item.Selected = false;
+                selectedRewardItem = null;
+                UpdateRewardTitleText(); // 更新文字为"大奖"
+                player.GetModPlayer<GachaPlayer>().SetSelectedReward(machineId, -1);
+                return;
+            }
 
-    // 取消之前选中的项
-    if (selectedRewardItem != null && selectedRewardItem != item)
-    {
-        selectedRewardItem.Selected = false;
-    }
+            // 取消之前选中的项
+            if (selectedRewardItem != null && selectedRewardItem != item)
+            {
+                selectedRewardItem.Selected = false;
+            }
 
-    // 选中新项
-    selectedRewardItem = item;
-    item.Selected = true;
-    UpdateRewardTitleText(); // 更新文字为"已选择：大奖名"
+            // 选中新项
+            selectedRewardItem = item;
+            item.Selected = true;
+            UpdateRewardTitleText(); // 更新文字为"已选择：大奖名"
 
-    // 把选中的大奖保存到玩家数据
-    int selectedItemType = item.DisplayItem.type; // 这里确保获取正确的 itemType
-    player.GetModPlayer<GachaPlayer>().SetSelectedReward(machineId, selectedItemType);
-}
+            // 把选中的大奖保存到玩家数据
+            // int selectedItemType = item.DisplayItem.type; // 这里确保获取正确的 itemType
+            // player.GetModPlayer<GachaPlayer>().SetSelectedReward(machineId, selectedItemType);
+            // 保存选中索引，而不是 ItemType
+            int selectedIndex = currentMachine.rewardsRealGold.FindIndex(r => r.itemType == item.DisplayItem.type);
+            if (selectedIndex >= 0)
+                player.GetModPlayer<GachaPlayer>().SetSelectedReward(machineId, selectedIndex);
+            else
+                player.GetModPlayer<GachaPlayer>().SetSelectedReward(machineId, -1); // 防护
+        }
 
         // ================== 更新大奖文字 =================
         private void UpdateRewardTitleText()
