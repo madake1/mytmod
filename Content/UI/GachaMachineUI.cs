@@ -11,6 +11,8 @@ using Madake1.Content.UI;
 using Terraria.GameContent;
 using System.IO;
 using System.Linq;
+using madake1.Content.Items.Zhanlipin;
+using madake1.Content.Gacha;
 
 namespace madake1.Content.UI
 {
@@ -100,6 +102,19 @@ namespace madake1.Content.UI
             singleButton.Width.Set(buttonWidth, 0f);
             singleButton.Height.Set(buttonHeight, 0f);
             buttonContainer.Append(singleButton);
+            singleButton.OnLeftClick += (_, _) =>
+            {
+                Player player = Main.LocalPlayer;
+
+                if (!TryConsumeJinQiu(player, 1))
+                    return;
+                // 下一步才会调用 GachaService
+                // 仅测试：输出日志
+                var results = GachaService.DoPull(player, 1);
+                foreach (var r in results)
+                    Main.NewText($"抽到：{r.itemType} 数量：{r.stack} 品质：{r.quality}");
+            };
+
 
             // ================= 十连按钮 =================
             tenButton = new UIImageButton(
@@ -109,6 +124,19 @@ namespace madake1.Content.UI
             tenButton.Height.Set(buttonHeight, 0f);
             tenButton.Left.Set(buttonWidth + spacing, 0f);
             buttonContainer.Append(tenButton);
+            tenButton.OnLeftClick += (_, _) =>
+            {
+                Player player = Main.LocalPlayer;
+
+                if (!TryConsumeJinQiu(player, 10))
+                    return;
+                // 仅测试：输出日志
+                var results = GachaService.DoPull(player, 10);
+
+                foreach (var r in results)
+                    Main.NewText($"抽到：{r.itemType} 数量：{r.stack} 品质：{r.quality}");
+
+            };
 
             // ================= 关闭按钮 =================
             closeButton = new UIImageButton(
@@ -182,7 +210,7 @@ namespace madake1.Content.UI
            
         }
         
-        // 单选奖励项
+        // ================ 选择奖励项（单选逻辑） =================
         private void SelectRewardItem(RewardDisplayItem item)
         {
             // 如果点击的是已选中的项，则取消选中
@@ -206,7 +234,7 @@ namespace madake1.Content.UI
             UpdateRewardTitleText(); // 更新文字为"已选择：大奖名"
         }
         
-        // 更新奖励标题文字
+        // ================== 更新大奖文字 =================
         private void UpdateRewardTitleText()
         {
             if (rewardTitleText == null) return;
@@ -220,5 +248,24 @@ namespace madake1.Content.UI
                 rewardTitleText.SetText("本期UP！");
             }
         }
+        // ==================检查金球数量==================
+        private bool TryConsumeJinQiu(Player player, int count)
+        {
+            int jinQiuType = ModContent.ItemType<JinQiu>();
+
+            if (player.CountItem(jinQiuType) < count)
+            {
+                Main.NewText("金球不够了辣！", Color.Red);
+                return false;
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                player.ConsumeItem(jinQiuType);
+            }
+
+            return true;
+        }
+
     }
 }
