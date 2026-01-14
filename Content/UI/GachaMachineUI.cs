@@ -110,7 +110,7 @@ namespace madake1.Content.UI
                     return;
                 // 下一步才会调用 GachaService
                 // 仅测试：输出日志
-                var results = GachaService.DoPull(player, 1);
+                var results = GachaService.DoPull(player, currentMachine, 1);
                 foreach (var r in results)
                     Main.NewText($"抽到：{r.itemType} 数量：{r.stack} 品质：{r.quality}");
             };
@@ -131,7 +131,7 @@ namespace madake1.Content.UI
                 if (!TryConsumeJinQiu(player, 10))
                     return;
                 // 仅测试：输出日志
-                var results = GachaService.DoPull(player, 10);
+                var results = GachaService.DoPull(player, currentMachine, 10);
 
                 foreach (var r in results)
                     Main.NewText($"抽到：{r.itemType} 数量：{r.stack} 品质：{r.quality}");

@@ -5,34 +5,17 @@
     "radius": 16,
     "rewardsRealGold": [
       {"item": "Jinxi", "count": 5},
-      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
-      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
-      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
-      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
-      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
-      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
-      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
-      {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
       {"item": "Terraria.ID.ItemID.Sandgun", "count": 1}
       
     ],
     "rewardsGold": [
-      {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
-      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
-      {"item": "Terraria.ID.ItemID.NightsEdge", "count": 1}
+      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1}
     ],
     "rewardsPurple": [
-      {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
-      {"item": "Terraria.ID.ItemID.SeafoamTrident", "count": 1},
-      {"item": "Terraria.ID.ItemID.MeteoriteSword", "count": 1}
+      {"item": "Terraria.ID.ItemID.BalloonToilet", "count": 1}
     ],
     "rewardsBlue": [
-      {"item": "Terraria.ID.ItemID.FluorescentRod", "count": 10},
-      {"item": "Terraria.ID.ItemID.WoodenSword", "count": 50},
-      {"item": "Terraria.ID.ItemID.SignalFlare", "count": 10},
-      {"item": "Terraria.ID.ItemID.ShinePotion", "count": 2},
-      {"item": "Terraria.ID.ItemID.IronOre", "count": 5},
-      {"item": "Terraria.ID.ItemID.CopperOre", "count": 5}
+      {"item": "Terraria.ID.ItemID.WoodenSword", "count": 1}
     ]
   },
   {
@@ -43,21 +26,12 @@
       {"item": "Changli", "count": 1}
     ],
     "rewardsGold": [
-      {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
-      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
       {"item": "Terraria.ID.ItemID.NightsEdge", "count": 1}
     ],
     "rewardsPurple": [
-      {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
-      {"item": "Terraria.ID.ItemID.SeafoamTrident", "count": 1},
-      {"item": "Terraria.ID.ItemID.MeteoriteSword", "count": 1}
+      {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1}
     ],
     "rewardsBlue": [
-      {"item": "Terraria.ID.ItemID.FluorescentRod", "count": 10},
-      {"item": "Terraria.ID.ItemID.WoodenSword", "count": 50},
-      {"item": "Terraria.ID.ItemID.SignalFlare", "count": 10},
-      {"item": "Terraria.ID.ItemID.ShinePotion", "count": 2},
-      {"item": "Terraria.ID.ItemID.IronOre", "count": 5},
       {"item": "Terraria.ID.ItemID.CopperOre", "count": 5}
     ]
   },
@@ -70,22 +44,13 @@
       {"item": "Changli", "count": 1}
     ],
     "rewardsGold": [
-      {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
-      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
-      {"item": "Terraria.ID.ItemID.NightsEdge", "count": 1}
+      {"item": "Terraria.ID.ItemID.Shotgun", "count": 1}
     ],
     "rewardsPurple": [
-      {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
-      {"item": "Terraria.ID.ItemID.SeafoamTrident", "count": 1},
-      {"item": "Terraria.ID.ItemID.MeteoriteSword", "count": 1}
+      {"item": "Terraria.ID.ItemID.AshWoodChest", "count": 1}
     ],
     "rewardsBlue": [
-      {"item": "Terraria.ID.ItemID.FluorescentRod", "count": 10},
-      {"item": "Terraria.ID.ItemID.WoodenSword", "count": 50},
-      {"item": "Terraria.ID.ItemID.SignalFlare", "count": 10},
-      {"item": "Terraria.ID.ItemID.ShinePotion", "count": 2},
-      {"item": "Terraria.ID.ItemID.IronOre", "count": 5},
-      {"item": "Terraria.ID.ItemID.CopperOre", "count": 5}
+      {"item": "Terraria.ID.ItemID.BambooChair", "count": 10}
     ]
   }
 ]
