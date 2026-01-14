@@ -157,7 +157,7 @@ public class RewardDisplayItem : UIElement
         // 这样确保只能选中一个
         if (!Selectable)
             return;
-        
+        base.LeftClick(evt);
         // 不在这里处理Selected状态，由父类统一管理
     }
 }
