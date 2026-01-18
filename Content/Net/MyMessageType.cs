@@ -28,19 +28,11 @@ namespace madake1.Content.Net
             if (Main.netMode == NetmodeID.SinglePlayer)
             {
                 Tools.SpawnGachaItems(player, results);
-
                 foreach (var r in results)
                 {
                     if (r.quality == GachaQuality.Gold || r.quality == GachaQuality.RealGold)
-                    {
                         Tools.ShowGoldText(player, r); 
-                    }
-                    else if (r.quality == GachaQuality.Purple)
-                    {
-                        Tools.ShowPurpleText(player, r);
-                    }
                 }
-
                 // Main.NewText($"[GachaRequest] 单机抽卡完成 machineId={machineId}, count={results.Count}", Color.Yellow);
                 return;
             }

@@ -27,14 +27,8 @@ namespace madake1
                     case MyMessageType.GoldDrop:
                         byte playerID = reader.ReadByte();
                         int itemType = reader.ReadInt32();
-                        GachaQuality quality = (GachaQuality)reader.ReadByte();
                         Player target = Main.player[playerID];
-
-                        if (quality == GachaQuality.Gold || quality == GachaQuality.RealGold)
-                            Tools.ShowGoldText(target, new GachaResult(itemType, 1, quality));
-                        else if (quality == GachaQuality.Purple)
-                            Tools.ShowPurpleText(target, new GachaResult(itemType, 1, quality));
-
+                        Tools.ShowGoldText(target, new GachaResult(itemType, 1, GachaQuality.Gold)); // 临时构造 GachaResult
                         break;
                 }
             }
@@ -64,16 +58,12 @@ namespace madake1
             // 生成物品
             Tools.SpawnGachaItems(player, results);
 
-            // 出金 / 出紫文字广播
+            // 出金文字广播
             foreach (var result in results)
             {
                 if (result.quality == GachaQuality.Gold || result.quality == GachaQuality.RealGold)
                 {
-                    Tools.BroadcastGoldText(player, result.itemType);
-                }
-                else if (result.quality == GachaQuality.Purple)
-                {
-                    Tools.BroadcastPurpleText(player, result.itemType);
+                    Tools.BroadcastGoldText(player, result.itemType); 
                 }
             }
         }
