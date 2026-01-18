@@ -9,7 +9,6 @@
       {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
       {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
       {"item": "Terraria.ID.ItemID.Sandgun", "count": 1}
-      
     ],
     "rewardsGold": [
       {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
@@ -18,16 +17,20 @@
     ],
     "rewardsPurple": [
       {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
-      {"item": "Terraria.ID.ItemID.SeafoamTrident", "count": 1},
-      {"item": "Terraria.ID.ItemID.MeteoriteSword", "count": 1}
+      {"item": "Terraria.ID.ItemID.WoodenSword", "count": 1}
+
     ],
     "rewardsBlue": [
-      {"item": "Terraria.ID.ItemID.FluorescentRod", "count": 10},
-      {"item": "Terraria.ID.ItemID.WoodenSword", "count": 50},
-      {"item": "Terraria.ID.ItemID.SignalFlare", "count": 10},
-      {"item": "Terraria.ID.ItemID.ShinePotion", "count": 2},
-      {"item": "Terraria.ID.ItemID.IronOre", "count": 5},
-      {"item": "Terraria.ID.ItemID.CopperOre", "count": 5}
+      {"item": "Terraria.ID.ItemID.IronOre", "count": 10},
+      {"item": "Terraria.ID.ItemID.CopperOre", "count": 8},
+      {"item": "Terraria.ID.ItemID.SilverOre", "count": 6},
+      {"item": "Terraria.ID.ItemID.GoldOre", "count": 5},
+      {"item": "Terraria.ID.ItemID.LesserHealingPotion", "count": 5},
+      {"item": "Terraria.ID.ItemID.ManaPotion", "count": 4},
+      {"item": "Terraria.ID.ItemID.LesserManaPotion", "count": 3},
+      {"item": "Terraria.ID.ItemID.Torch", "count": 20},
+      {"item": "Terraria.ID.ItemID.Wood", "count": 15},
+      {"item": "Terraria.ID.ItemID.RecallPotion", "count": 2}
     ]
   },
   {
@@ -45,16 +48,20 @@
     ],
     "rewardsPurple": [
       {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
-      {"item": "Terraria.ID.ItemID.SeafoamTrident", "count": 1},
-      {"item": "Terraria.ID.ItemID.MeteoriteSword", "count": 1}
+      {"item": "Terraria.ID.ItemID.BoneSword", "count": 1},
+      {"item": "Terraria.ID.ItemID.Cutlass", "count": 1}
     ],
     "rewardsBlue": [
-      {"item": "Terraria.ID.ItemID.FluorescentRod", "count": 10},
-      {"item": "Terraria.ID.ItemID.WoodenSword", "count": 50},
-      {"item": "Terraria.ID.ItemID.SignalFlare", "count": 10},
-      {"item": "Terraria.ID.ItemID.ShinePotion", "count": 2},
-      {"item": "Terraria.ID.ItemID.IronOre", "count": 5},
-      {"item": "Terraria.ID.ItemID.CopperOre", "count": 5}
+      {"item": "Terraria.ID.ItemID.IronOre", "count": 10},
+      {"item": "Terraria.ID.ItemID.CopperOre", "count": 8},
+      {"item": "Terraria.ID.ItemID.SilverOre", "count": 6},
+      {"item": "Terraria.ID.ItemID.GoldOre", "count": 5},
+      {"item": "Terraria.ID.ItemID.LesserHealingPotion", "count": 5},
+      {"item": "Terraria.ID.ItemID.ManaPotion", "count": 4},
+      {"item": "Terraria.ID.ItemID.LesserManaPotion", "count": 3},
+      {"item": "Terraria.ID.ItemID.Torch", "count": 20},
+      {"item": "Terraria.ID.ItemID.Wood", "count": 15},
+      {"item": "Terraria.ID.ItemID.RecallPotion", "count": 2}
     ]
   },
   {
@@ -73,15 +80,21 @@
     "rewardsPurple": [
       {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
       {"item": "Terraria.ID.ItemID.SeafoamTrident", "count": 1},
-      {"item": "Terraria.ID.ItemID.MeteoriteSword", "count": 1}
+      {"item": "Terraria.ID.ItemID.MeteoriteSword", "count": 1},
+      {"item": "Terraria.ID.ItemID.BoneSword", "count": 1},
+      {"item": "Terraria.ID.ItemID.Cutlass", "count": 1}
     ],
     "rewardsBlue": [
-      {"item": "Terraria.ID.ItemID.FluorescentRod", "count": 10},
-      {"item": "Terraria.ID.ItemID.WoodenSword", "count": 50},
-      {"item": "Terraria.ID.ItemID.SignalFlare", "count": 10},
-      {"item": "Terraria.ID.ItemID.ShinePotion", "count": 2},
-      {"item": "Terraria.ID.ItemID.IronOre", "count": 5},
-      {"item": "Terraria.ID.ItemID.CopperOre", "count": 5}
+      {"item": "Terraria.ID.ItemID.IronOre", "count": 10},
+      {"item": "Terraria.ID.ItemID.CopperOre", "count": 8},
+      {"item": "Terraria.ID.ItemID.SilverOre", "count": 6},
+      {"item": "Terraria.ID.ItemID.GoldOre", "count": 5},
+      {"item": "Terraria.ID.ItemID.LesserHealingPotion", "count": 5},
+      {"item": "Terraria.ID.ItemID.ManaPotion", "count": 4},
+      {"item": "Terraria.ID.ItemID.LesserManaPotion", "count": 3},
+      {"item": "Terraria.ID.ItemID.Torch", "count": 20},
+      {"item": "Terraria.ID.ItemID.Wood", "count": 15},
+      {"item": "Terraria.ID.ItemID.RecallPotion", "count": 2}
     ]
   }
 ]

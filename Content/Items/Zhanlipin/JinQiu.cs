@@ -12,7 +12,7 @@ namespace madake1.Content.Items.Zhanlipin
             Item.width = 32;           // 贴图宽度，根据实际图片修改
             Item.height = 32;          // 贴图高度
             Item.maxStack = 999;       // 最大叠加
-            Item.value = Item.buyPrice(silver: 10); // 出售价格
+            Item.value = Item.buyPrice(silver: 160); // 出售价格
             Item.rare = ItemRarityID.Green; // 稀有度
         }
 
