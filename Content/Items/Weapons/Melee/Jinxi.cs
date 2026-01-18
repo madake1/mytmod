@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Terraria.ModLoader;
 
-namespace madake1.Content.Items.Weapons
+namespace madake1.Content.Items.Weapons.Melee
 {
-    public class Cunhaojian : ModItem
+    public class Jinxi : ModItem
     {
         public override void SetDefaults()
         {

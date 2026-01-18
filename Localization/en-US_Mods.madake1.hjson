@@ -28,7 +28,21 @@ Items: {
 		DisplayName: Cunhaojian
 		Tooltip: ""
 	}
+
+	TwoCrownBow: {
+		DisplayName: Two Crown Bow
+		Tooltip: ""
+	}
+
+	TeleportTowerItem: {
+		DisplayName: Teleport Tower Item
+		Tooltip: ""
+	}
 }
 
-Tiles.GachaMachineTile.MapEntry: Gacha Machine Tile
+Tiles: {
+	GachaMachineTile.MapEntry: Gacha Machine Tile
+	TeleportTowerTile.MapEntry: Teleport Tower Tile
+}
+
 NPCs.CustomVendorNPC.DisplayName: Custom Vendor N P C

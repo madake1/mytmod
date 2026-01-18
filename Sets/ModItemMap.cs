@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Terraria.ModLoader;
-using madake1.Content.Items.Weapons; // 引入你 ModItem 命名空间
+using madake1.Content.Items.Weapons.Melee; // 引入你 ModItem 命名空间
 
 public static class ModItemMap
 {
