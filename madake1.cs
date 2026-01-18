@@ -26,8 +26,9 @@ namespace madake1
 
                     case MyMessageType.GoldDrop:
                         byte playerID = reader.ReadByte();
+                        int itemType = reader.ReadInt32();
                         Player target = Main.player[playerID];
-                        Tools.ShowGoldText(target);
+                        Tools.ShowGoldText(target, new GachaResult(itemType, 1, GachaQuality.Gold)); // 临时构造 GachaResult
                         break;
                 }
             }
@@ -62,7 +63,7 @@ namespace madake1
             {
                 if (result.quality == GachaQuality.Gold || result.quality == GachaQuality.RealGold)
                 {
-                    Tools.BroadcastGoldText(player);
+                    Tools.BroadcastGoldText(player, result.itemType); 
                 }
             }
         }

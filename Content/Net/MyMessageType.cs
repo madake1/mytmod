@@ -31,7 +31,7 @@ namespace madake1.Content.Net
                 foreach (var r in results)
                 {
                     if (r.quality == GachaQuality.Gold || r.quality == GachaQuality.RealGold)
-                        Tools.ShowGoldText(player);
+                        Tools.ShowGoldText(player, r); 
                 }
                 // Main.NewText($"[GachaRequest] 单机抽卡完成 machineId={machineId}, count={results.Count}", Color.Yellow);
                 return;
