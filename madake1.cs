@@ -5,6 +5,8 @@ using madake1.Content.Gacha;
 using madake1.Content.Net;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using madake1.Utils;
 
 namespace madake1
 {
@@ -16,31 +18,52 @@ namespace madake1
             {
                 MyMessageType type = (MyMessageType)reader.ReadByte();
 
-                if (type == MyMessageType.GachaResult)
+                switch (type)
                 {
-                    int playerID = reader.ReadInt32();
-                    var player = Main.player[playerID];
-                    if (player == null || !player.active) return;
+                    case MyMessageType.GachaResult:
+                        HandleGachaResult(reader, whoAmI);
+                        break;
 
-                    int count = reader.ReadInt32();
-                    var results = new List<GachaResult>();
-
-                    for (int i = 0; i < count; i++)
-                    {
-                        int itemType = reader.ReadInt32();
-                        int stack = reader.ReadInt32();
-                        GachaQuality quality = (GachaQuality)reader.ReadByte();
-
-                        results.Add(new GachaResult(itemType, stack, quality));
-                    }
-
-                    // 使用 Tools 统一生成物品
-                    Tools.SpawnGachaItems(player, results);
+                    case MyMessageType.GoldDrop:
+                        byte playerID = reader.ReadByte();
+                        Player target = Main.player[playerID];
+                        Tools.ShowGoldText(target);
+                        break;
                 }
             }
             catch (Exception ex)
             {
                 Logger.Error($"HandlePacket 异常: {ex}");
+            }
+        }
+
+        private void HandleGachaResult(BinaryReader reader, int whoAmI)
+        {
+            int playerID = reader.ReadInt32();
+            Player player = Main.player[playerID];
+            if (player == null || !player.active) return;
+
+            int count = reader.ReadInt32();
+            var results = new List<GachaResult>();
+
+            for (int i = 0; i < count; i++)
+            {
+                int itemType = reader.ReadInt32();
+                int stack = reader.ReadInt32();
+                GachaQuality quality = (GachaQuality)reader.ReadByte();
+                results.Add(new GachaResult(itemType, stack, quality));
+            }
+
+            // 生成物品
+            Tools.SpawnGachaItems(player, results);
+
+            // 出金文字广播
+            foreach (var result in results)
+            {
+                if (result.quality == GachaQuality.Gold || result.quality == GachaQuality.RealGold)
+                {
+                    Tools.BroadcastGoldText(player);
+                }
             }
         }
     }

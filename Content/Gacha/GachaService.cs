@@ -55,7 +55,7 @@ namespace madake1.Content.Gacha
                 // 防护：空池子降级
                 if (pool == null || pool.Count == 0)
                 {
-                    Main.NewText("[GachaDebug] 抽奖池为空，降级为蓝色奖励池");
+                    // Main.NewText("[GachaDebug] 抽奖池为空，降级为蓝色奖励池");
                     pool = config.rewardsBlue.Count > 0 ? config.rewardsBlue : new List<GachaReward>();
                 }
 
@@ -71,13 +71,13 @@ namespace madake1.Content.Gacha
                 {
                     // 真大保底：必出选中的奖励
                     reward = config.rewardsRealGold[selectedRealGoldIndex.Value];
-                    Main.NewText("[DoPull] 真大保底：必出选中的大奖");
+                    // Main.NewText("[DoPull] 真大保底：必出选中的大奖");
                     gachaPlayer.SetUpGuarantee(machineId, false); // 消耗大保底
                 }
                 else if (forceUp && !validIndex)
                 {
                     // 防护：索引无效 → 随机 RealGold
-                    Main.NewText("[DoPull] 真大保底索引无效，随机抽 RealGold");
+                    // Main.NewText("[DoPull] 真大保底索引无效，随机抽 RealGold");
                     pool = config.rewardsRealGold.Count > 0 ? config.rewardsRealGold : config.rewardsBlue;
                     reward = pool[Main.rand.Next(pool.Count)];
                     gachaPlayer.SetUpGuarantee(machineId, false);
@@ -94,11 +94,11 @@ namespace madake1.Content.Gacha
                         if (selectedReward != null && reward.itemType != selectedReward.itemType)
                         {
                             gachaPlayer.SetUpGuarantee(machineId, true);
-                            Main.NewText("[GachaDebug] 非大保底 RealGold 歪了，激活大保底");
+                            // Main.NewText("[GachaDebug] 非大保底 RealGold 歪了，激活大保底");
                         }
                         else if (selectedReward != null)
                         {
-                            Main.NewText("[GachaDebug] 非大保底 RealGold 抽中选中的大奖");
+                            // Main.NewText("[GachaDebug] 非大保底 RealGold 抽中选中的大奖");
                         }
                     }
                     else
@@ -122,6 +122,7 @@ namespace madake1.Content.Gacha
                 {
                     reward.ParseItemType();
                     results.Add(new GachaResult(reward.itemType, reward.count, quality));
+
                     // 下面的代码是之前的，现在改为服务器创建物品了，为了兼容联机。
                     // int itemType = reward.itemType;
                     // int stack = reward.count;
@@ -142,7 +143,7 @@ namespace madake1.Content.Gacha
         {
             if (data.pullsSinceLastGold >= 79)
             {
-                Main.NewText("[DetermineQuality] 金色保底触发");
+                // Main.NewText("[DetermineQuality] 金色保底触发");
                 return DetermineGoldQuality(player, data, config, selectedRealGoldIndex);
             }
 
@@ -162,7 +163,7 @@ namespace madake1.Content.Gacha
 
             if (rollF < goldChance)
             {
-                Main.NewText("[DetermineQuality] 随机抽到金色");
+                // Main.NewText("[DetermineQuality] 随机抽到金色");
                 return DetermineGoldQuality(player, data, config, selectedRealGoldIndex);
             }
             else if (rollF < purpleChance)
@@ -186,12 +187,12 @@ namespace madake1.Content.Gacha
 
             if (player.IsUpGuaranteeActive(machineId) && validIndex)
             {
-                Main.NewText("[DetermineGoldQuality] 真保底触发，必出选中的 RealGold");
+                // Main.NewText("[DetermineGoldQuality] 真保底触发，必出选中的 RealGold");
                 return GachaQuality.RealGold;
             }
             else if (player.IsUpGuaranteeActive(machineId) && !validIndex)
             {
-                Main.NewText("[DetermineGoldQuality] 真保底索引无效，降级为 Gold");
+                // Main.NewText("[DetermineGoldQuality] 真保底索引无效，降级为 Gold");
                 player.SetUpGuarantee(machineId, true);
                 return GachaQuality.Gold;
             }
@@ -201,7 +202,7 @@ namespace madake1.Content.Gacha
             {
                 if (roll < 0.4f)
                 {
-                    Main.NewText("[DetermineGoldQuality] 非大保底出普通 Gold → 激活大保底");
+                    // Main.NewText("[DetermineGoldQuality] 非大保底出普通 Gold → 激活大保底");
                     player.SetUpGuarantee(machineId, true);
                     return GachaQuality.Gold;
                 }
@@ -214,12 +215,12 @@ namespace madake1.Content.Gacha
             {
                 if (roll < 0.5f)
                 {
-                    Main.NewText("[DetermineGoldQuality] 没有选中 → Gold");
+                    // Main.NewText("[DetermineGoldQuality] 没有选中 → Gold");
                     return GachaQuality.Gold;
                 }
                 else
                 {
-                    Main.NewText("[DetermineGoldQuality] 没有选中 → RealGold");
+                    // Main.NewText("[DetermineGoldQuality] 没有选中 → RealGold");
                     return GachaQuality.RealGold;
                 }
             }
@@ -237,12 +238,12 @@ namespace madake1.Content.Gacha
                 case GachaQuality.RealGold:
                     if (forceUp && validIndex)
                     {
-                        Main.NewText("[GeneratePool] 真保底池：必出选中的大奖");
+                        // Main.NewText("[GeneratePool] 真保底池：必出选中的大奖");
                         pool = new List<GachaReward> { config.rewardsRealGold[selectedRealGoldIndex.Value] };
                     }
                     else
                     {
-                        Main.NewText("[GeneratePool] 普通 RealGold 池");
+                        // Main.NewText("[GeneratePool] 普通 RealGold 池");
                         pool = config.rewardsRealGold.Count > 0 ? config.rewardsRealGold : config.rewardsBlue;
                     }
                     break;
