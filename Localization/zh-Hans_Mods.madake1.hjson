@@ -31,3 +31,4 @@ Items: {
 }
 
 Tiles.GachaMachineTile.MapEntry: Gacha Machine Tile
+NPCs.CustomVendorNPC.DisplayName: 米桑
