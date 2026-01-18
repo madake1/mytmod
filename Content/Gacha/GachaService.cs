@@ -121,11 +121,13 @@ namespace madake1.Content.Gacha
                 if (reward != null)
                 {
                     reward.ParseItemType();
-                    int itemType = reward.itemType;
-                    int stack = reward.count;
+                    results.Add(new GachaResult(reward.itemType, reward.count, quality));
+                    // 下面的代码是之前的，现在改为服务器创建物品了，为了兼容联机。
+                    // int itemType = reward.itemType;
+                    // int stack = reward.count;
 
-                    results.Add(new GachaResult(itemType, stack, quality));
-                    Item.NewItem(player.GetSource_Misc("GachaTest"), player.position, itemType, stack);
+                    // results.Add(new GachaResult(itemType, stack, quality));
+                    // Item.NewItem(player.GetSource_Misc("GachaTest"), player.position, itemType, stack);
                 }
 
                 // ========================= 6. 更新计数 =========================

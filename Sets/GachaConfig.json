@@ -35,7 +35,8 @@
     "centerY": 235,
     "radius": 16,
     "rewardsRealGold": [
-      {"item": "Changli", "count": 1}
+      {"item": "Changli", "count": 1},
+      {"item": "Cunhaojian", "count": 1}
     ],
     "rewardsGold": [
       {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},

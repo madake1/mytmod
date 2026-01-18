@@ -23,6 +23,11 @@ Items: {
 		DisplayName: Changli
 		Tooltip: ""
 	}
+
+	Cunhaojian: {
+		DisplayName: Cunhaojian
+		Tooltip: ""
+	}
 }
 
 Tiles.GachaMachineTile.MapEntry: Gacha Machine Tile

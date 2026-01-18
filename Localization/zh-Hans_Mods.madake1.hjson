@@ -23,6 +23,11 @@ Items: {
 		DisplayName: 武器2
 		Tooltip: 测试
 	}
+
+	Cunhaojian: {
+		DisplayName: 村好剑
+		Tooltip: 村里人都说好剑
+	}
 }
 
 Tiles.GachaMachineTile.MapEntry: Gacha Machine Tile

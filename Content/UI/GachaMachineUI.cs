@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using madake1.Content.Items.Zhanlipin;
 using madake1.Content.Gacha;
+using madake1.Content.Net;
 
 namespace madake1.Content.UI
 {
@@ -112,6 +113,7 @@ namespace madake1.Content.UI
                 // 下一步才会调用 GachaService
                 // 仅测试：输出日志
                 var results = GachaService.DoPull(player, currentMachine, 1);
+                GachaRequest.Request(player, currentMachine, results);
                 // foreach (var r in results)
 
             };
@@ -133,6 +135,7 @@ namespace madake1.Content.UI
                     return;
                 // 仅测试：输出日志
                 var results = GachaService.DoPull(player, currentMachine, 10);
+                GachaRequest.Request(player, currentMachine, results);
 
                 // foreach (var r in results)
 

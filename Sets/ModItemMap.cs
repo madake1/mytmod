@@ -8,6 +8,7 @@ public static class ModItemMap
     {
         { "Jinxi", ModContent.ItemType<Jinxi>() },
         { "Changli", ModContent.ItemType<Changli>() },
+        { "Cunhaojian", ModContent.ItemType<Cunhaojian>() },
         // 如果有其他自定义 ModItem，也在这里加：
         // { "OtherItem", ModContent.ItemType<OtherItem>() },
     };
