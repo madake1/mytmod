@@ -2,7 +2,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 
-namespace madake1.Sets
+namespace madake1.Common.WorldRules
 {
     public class SeedLockPlayer : ModPlayer { }
 

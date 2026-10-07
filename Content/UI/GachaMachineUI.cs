@@ -4,13 +4,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
-using madake1.Sets;
+using madake1.Common.Gacha;
 using System.Collections.Generic;
-using Madake1.Content.UI;
+using madake1.Content.UI;
 using Terraria.GameContent;
 using madake1.Content.Items.Zhanlipin;
-using madake1.Content.Gacha;
-using madake1.Content.Net;
+using madake1.Common.Networking;
 
 namespace madake1.Content.UI
 {
@@ -95,9 +94,11 @@ namespace madake1.Content.UI
             singleButton.OnLeftClick += (_, _) =>
             {
                 Player player = Main.LocalPlayer;
-                if (!TryConsumeJinQiu(player, 1)) return;
-                var results = GachaService.DoPull(player, currentMachine, 1);
-                GachaRequest.Request(player, currentMachine, results);
+                if (!GachaWorkflow.TryPull(player, currentMachine, 1, out string error))
+                {
+                    Main.NewText(error, Color.Red);
+                    return;
+                }
 
                 var data = player.GetModPlayer<GachaPlayer>().GetData(currentMachine.GetMachineId());
                 UpdateGoldCounter(data.pullsSinceLastGold, 80);
@@ -112,9 +113,11 @@ namespace madake1.Content.UI
             tenButton.OnLeftClick += (_, _) =>
             {
                 Player player = Main.LocalPlayer;
-                if (!TryConsumeJinQiu(player, 10)) return;
-                var results = GachaService.DoPull(player, currentMachine, 10);
-                GachaRequest.Request(player, currentMachine, results);
+                if (!GachaWorkflow.TryPull(player, currentMachine, 10, out string error))
+                {
+                    Main.NewText(error, Color.Red);
+                    return;
+                }
 
                 var data = player.GetModPlayer<GachaPlayer>().GetData(currentMachine.GetMachineId());
                 UpdateGoldCounter(data.pullsSinceLastGold, 80);
@@ -241,17 +244,5 @@ namespace madake1.Content.UI
                 rewardTitleText.SetText("本期UP！");
         }
 
-        // ================== 检查金球数量 =================
-        private bool TryConsumeJinQiu(Player player, int count)
-        {
-            int jinQiuType = ModContent.ItemType<JinQiu>();
-            if (player.CountItem(jinQiuType) < count)
-            {
-                Main.NewText("金球不够了辣！", Color.Red);
-                return false;
-            }
-            for (int i = 0; i < count; i++) player.ConsumeItem(jinQiuType);
-            return true;
-        }
     }
 }

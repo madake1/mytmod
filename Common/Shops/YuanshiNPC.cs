@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using madake1.Content.Items.Zhanlipin; // 引入你的道具命名空间
 
-namespace madake1.Content.NPCs
+namespace madake1.Common.Shops
 {
     public class YuanshiNPC : GlobalNPC
     {

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 using System.IO;
 using System;
 
-namespace Madake1.Content.UI;
+namespace madake1.Content.UI;
 public class RewardDisplayItem : UIElement
 {
     public Item DisplayItem;
@@ -17,19 +17,6 @@ public class RewardDisplayItem : UIElement
 
     private Color backgroundColor;
     
-    // #region agent log
-    private static void Log(string location, string message, object data, string hypothesisId = "")
-    {
-        try
-        {
-            string logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Terraria", "tModLoader", "ModSources", ".cursor", "debug.log");
-            Directory.CreateDirectory(Path.GetDirectoryName(logPath));
-            var logEntry = new { sessionId = "debug-session", runId = "run1", hypothesisId, location, message, data, timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() };
-            File.AppendAllText(logPath, Newtonsoft.Json.JsonConvert.SerializeObject(logEntry) + "\n");
-        }
-        catch { }
-    }
-    // #endregion
 
     public RewardDisplayItem(Item item, int count, Color bgColor, bool selectable = false)
     {

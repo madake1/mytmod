@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- Copy to Build.Local.props and point to your installed stable tModLoader. -->
+    <TmlTargetsPath>D:\SteamLibrary\steamapps\common\tModLoader\tMLMod.targets</TmlTargetsPath>
+  </PropertyGroup>
+</Project>

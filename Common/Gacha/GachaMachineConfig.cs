@@ -1,3 +1,4 @@
+namespace madake1.Common.Gacha;
 using System;
 using System.Collections.Generic;
 using Terraria.ID;

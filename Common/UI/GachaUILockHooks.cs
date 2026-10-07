@@ -3,14 +3,14 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 
-namespace madake1.Sets
+namespace madake1.Common.UI
 {
     public class GachaUILockPlayer : ModPlayer { }
 
     public class GachaUILockTile : GlobalTile
     {
         // 判断UI是否打开
-        private bool IsGachaUILocked => ModContent.GetInstance<Content.UI.GachaUISystem>()
+        private bool IsGachaUILocked => ModContent.GetInstance<madake1.Content.UI.GachaUISystem>()
                                                 .GachaUIInterface?.CurrentState != null;
 
         // 阻止破坏方块（家具也在这里）
@@ -40,7 +40,7 @@ namespace madake1.Sets
 
     public class GachaUILockWall : GlobalWall
     {
-        private bool IsGachaUILocked => ModContent.GetInstance<Content.UI.GachaUISystem>()
+        private bool IsGachaUILocked => ModContent.GetInstance<madake1.Content.UI.GachaUISystem>()
                                                 .GachaUIInterface?.CurrentState != null;
 
         public override void KillWall(int i, int j, int type, ref bool fail)
@@ -52,7 +52,7 @@ namespace madake1.Sets
 
     public class GachaUILockItem : GlobalItem
     {
-        private bool IsGachaUILocked => ModContent.GetInstance<Content.UI.GachaUISystem>()
+        private bool IsGachaUILocked => ModContent.GetInstance<madake1.Content.UI.GachaUISystem>()
                                                 .GachaUIInterface?.CurrentState != null;
 
         // 阻止使用物品和攻击

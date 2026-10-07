@@ -2,7 +2,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria;
 using Microsoft.Xna.Framework;
-using madake1.Sets;
+using madake1.Common.Gacha;
 using System.IO;
 using System;
 using System.Linq;
@@ -20,19 +20,6 @@ namespace madake1.Content.UI
         // 保存待设置的machine，用于UI初始化后设置
         private GachaMachineConfig pendingMachine = null;
         
-        // #region agent log
-        private static void Log(string location, string message, object data, string hypothesisId = "")
-        {
-            try
-            {
-                string logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Terraria", "tModLoader", "ModSources", ".cursor", "debug.log");
-                Directory.CreateDirectory(Path.GetDirectoryName(logPath));
-                var logEntry = new { sessionId = "debug-session", runId = "run1", hypothesisId, location, message, data, timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() };
-                File.AppendAllText(logPath, Newtonsoft.Json.JsonConvert.SerializeObject(logEntry) + "\n");
-            }
-            catch { }
-        }
-        // #endregion
 
         public override void Load()
         {
@@ -88,14 +75,8 @@ namespace madake1.Content.UI
 
         public void ToggleUI(int tileX = -1, int tileY = -1)
         {
-            // #region agent log
-            Log("GachaUISystem.cs:ToggleUI", "ToggleUI called", new { tileX, tileY, currentStateIsNull = GachaUIInterface?.CurrentState == null }, "A");
-            // #endregion
             if (GachaUIInterface.CurrentState == null)
             {
-                // #region agent log
-                Log("GachaUISystem.cs:ToggleUI", "Setting UI state", new { }, "A");
-                // #endregion
                 GachaUIInterface.SetState(GachaUIState);
                 uiTileX = tileX;
                 uiTileY = tileY;
@@ -103,9 +84,6 @@ namespace madake1.Content.UI
                 // 如果有待设置的machine，在UI初始化后设置
                 if (pendingMachine != null)
                 {
-                    // #region agent log
-                    Log("GachaUISystem.cs:ToggleUI", "Setting pending machine after UI init", new { }, "A");
-                    // #endregion
                     // 延迟一帧确保UI完全初始化
                     Main.QueueMainThreadAction(() =>
                     {
@@ -114,9 +92,6 @@ namespace madake1.Content.UI
                     });
                 }
                 
-                // #region agent log
-                Log("GachaUISystem.cs:ToggleUI", "UI state set", new { stateSet = true }, "A");
-                // #endregion
             }
             else
             {
@@ -128,9 +103,6 @@ namespace madake1.Content.UI
         }
         public void OpenPanel(GachaMachineConfig machine, int tileX = -1, int tileY = -1)
         {
-            // #region agent log
-            Log("GachaUISystem.cs:OpenPanel", "OpenPanel called", new { tileX, tileY, machineIsNull = machine == null, rewardsCount = machine?.rewardsRealGold?.Count ?? 0 }, "A");
-            // #endregion
             // 保存当前扭蛋机位置，用于距离检测
             uiTileX = tileX;
             uiTileY = tileY;
@@ -138,21 +110,12 @@ namespace madake1.Content.UI
             // 如果UI还没打开，保存machine待设置
             if (GachaUIInterface?.CurrentState == null)
             {
-                // #region agent log
-                Log("GachaUISystem.cs:OpenPanel", "UI not open, saving pending machine", new { }, "A");
-                // #endregion
                 pendingMachine = machine;
             }
             else
             {
                 // 把奖励数据传给 UI 状态
-                // #region agent log
-                Log("GachaUISystem.cs:OpenPanel", "Before SetMachine", new { }, "A");
-                // #endregion
                 GachaUIState.SetMachine(machine);
-                // #region agent log
-                Log("GachaUISystem.cs:OpenPanel", "After SetMachine", new { }, "A");
-                // #endregion
             }
         }
     }

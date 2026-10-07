@@ -3,3 +3,7 @@ obj/
 *.log
 *.user
 *.tmp
+Build.Local.props
+.vs/
+.idea/
+*.tmod

@@ -1,20 +1,12 @@
-using madake1.Content.Gacha;
+using madake1.Common.Gacha;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using Terraria.ID;
-using madake1.Utils;
 
-namespace madake1.Content.Net
+namespace madake1.Common.Networking
 {
-    public enum MyMessageType : byte
-    {
-        GachaRequest,
-        GachaResult,
-        GoldDrop
-    }
-
     public static class GachaRequest
     {
         /// <summary>
@@ -27,11 +19,11 @@ namespace madake1.Content.Net
             // ================= 单机模式 =================
             if (Main.netMode == NetmodeID.SinglePlayer)
             {
-                Tools.SpawnGachaItems(player, results);
+                GachaEffects.SpawnGachaItems(player, results);
                 foreach (var r in results)
                 {
                     if (r.quality == GachaQuality.Gold || r.quality == GachaQuality.RealGold)
-                        Tools.ShowGoldText(player, r); 
+                        GachaEffects.ShowGoldText(player, r); 
                 }
                 // Main.NewText($"[GachaRequest] 单机抽卡完成 machineId={machineId}, count={results.Count}", Color.Yellow);
                 return;

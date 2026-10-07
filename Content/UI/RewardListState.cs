@@ -1,7 +1,8 @@
+namespace madake1.Content.UI;
 using Terraria.UI;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Madake1.Content.UI;
+using madake1.Content.UI;
 using Terraria.GameContent.UI.Elements;
 
 public class RewardListState : UIState

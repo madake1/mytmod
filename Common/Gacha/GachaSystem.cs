@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace madake1.Sets
+namespace madake1.Common.Gacha
 {
     public class GachaSystem : ModSystem
     {
@@ -17,7 +17,7 @@ namespace madake1.Sets
             try
             {
                 // 使用 Mod 内置资源读取 JSON
-                byte[] bytes = Mod.GetFileBytes("Sets/GachaConfig.json");
+                byte[] bytes = Mod.GetFileBytes("Data/Gacha/GachaConfig.json");
                 string json = System.Text.Encoding.UTF8.GetString(bytes);
 
                 Machines = JsonConvert.DeserializeObject<List<GachaMachineConfig>>(json);
