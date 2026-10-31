@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
+using System;
+using System.Linq;
+using madake1.Common.WorldRules;
 using Newtonsoft.Json;
 using Terraria;
 using Terraria.ModLoader;
@@ -20,12 +23,20 @@ namespace madake1.Common.Gacha
                 byte[] bytes = Mod.GetFileBytes("Data/Gacha/GachaConfig.json");
                 string json = System.Text.Encoding.UTF8.GetString(bytes);
 
-                Machines = JsonConvert.DeserializeObject<List<GachaMachineConfig>>(json);
+                var loaded = JsonConvert.DeserializeObject<List<GachaMachineConfig>>(json)
+                    ?? throw new InvalidDataException("扭蛋机配置为空。");
+                if (loaded.Any(m => m == null || string.IsNullOrWhiteSpace(m.mapId)
+                    || string.IsNullOrWhiteSpace(m.machineId) || string.IsNullOrWhiteSpace(m.displayName)))
+                    throw new InvalidDataException("扭蛋机必须配置地图 ID、机器 ID 和名称。");
+                if (loaded.GroupBy(m => m.machineId, StringComparer.Ordinal).Any(g => g.Count() > 1))
+                    throw new InvalidDataException("扭蛋机 ID 重复。");
+                Machines = loaded;
 
                 Main.NewText($"已加载扭蛋机数量: {Machines?.Count ?? 0}");
             }
-            catch
+            catch (Exception ex)
             {
+                Mod.Logger.Error($"加载扭蛋机配置失败: {ex}");
                 Main.NewText("未找到或解析 GachaConfig.json ❌");
             }
         }
@@ -38,6 +49,8 @@ namespace madake1.Common.Gacha
 
             foreach (var m in Machines)
             {
+                if (m.mapId != AdventureWorldSystem.MapId)
+                    continue;
                 float dx = tileX - m.centerX;
                 float dy = tileY - m.centerY;
 

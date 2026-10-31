@@ -5,6 +5,9 @@ using Terraria.ID;
 
 public class GachaMachineConfig
 {
+    public string mapId;
+    public string machineId;
+    public string displayName;
     public int centerX;
     public int centerY;
     public int radius;
@@ -14,10 +17,9 @@ public class GachaMachineConfig
     public List<GachaReward> rewardsPurple;
     public List<GachaReward> rewardsBlue;
 
-    // 增加方法获取机器唯一ID（用于玩家保底数据）
     public string GetMachineId()
     {
-        return $"{centerX}_{centerY}";
+        return machineId;
     }
 }
 

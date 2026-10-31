@@ -1,5 +1,8 @@
 [
   {
+    "mapId": "madake-adventure",
+    "machineId": "madake-adventure/gacha-01",
+    "displayName": "测试区·西侧扭蛋机",
     "centerX": 1957,
     "centerY": 235,
     "radius": 16,
@@ -34,6 +37,9 @@
     ]
   },
   {
+    "mapId": "madake-adventure",
+    "machineId": "madake-adventure/gacha-02",
+    "displayName": "测试区·中央扭蛋机",
     "centerX": 1989,
     "centerY": 235,
     "radius": 16,
@@ -65,6 +71,9 @@
     ]
   },
   {
+    "mapId": "madake-adventure",
+    "machineId": "madake-adventure/gacha-03",
+    "displayName": "测试区·东侧扭蛋机",
     "centerX": 2028,
     "centerY": 235,
     "radius": 16,

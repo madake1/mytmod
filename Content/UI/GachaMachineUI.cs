@@ -25,6 +25,7 @@ namespace madake1.Content.UI
         // ===== 大奖展示列表 =====
         private UIElement rewardContainer; 
         private UIPanel rewardPanel;
+        private UIText machineNameText;
         private UIText rewardTitleText;
         private GachaMachineConfig currentMachine;
         private RewardDisplayItem selectedRewardItem; // 当前选中的奖励项（单选）
@@ -58,17 +59,22 @@ namespace madake1.Content.UI
             rewardPanel.BorderColor = Color.Gold;
             mainPanel.Append(rewardPanel);
 
+            machineNameText = new UIText("");
+            machineNameText.Left.Set(10f, 0f);
+            machineNameText.Top.Set(8f, 0f);
+            mainPanel.Append(machineNameText);
+
             // "大奖"文字标签
             rewardTitleText = new UIText("本期UP！");
             rewardTitleText.Left.Set(10f, 0f);
-            rewardTitleText.Top.Set(10f, 0f);
+            rewardTitleText.Top.Set(5f, 0f);
             rewardTitleText.TextColor = Color.Gold;
-            mainPanel.Append(rewardTitleText);
+            rewardPanel.Append(rewardTitleText);
 
             // 奖励项容器（网格布局）
             rewardContainer = new UIElement();
             rewardContainer.Left.Set(10f, 0f);
-            rewardContainer.Top.Set(15f, 0f);
+            rewardContainer.Top.Set(28f, 0f);
             rewardContainer.Width.Set(350f, 0f);
             rewardContainer.Height.Set(140f, 0f);
             rewardPanel.Append(rewardContainer);
@@ -157,6 +163,7 @@ namespace madake1.Content.UI
         public void SetMachine(GachaMachineConfig machine)
         {
             currentMachine = machine;
+            machineNameText?.SetText(machine?.displayName ?? "");
             selectedRewardItem = null;
             UpdateRewardTitleText();
 

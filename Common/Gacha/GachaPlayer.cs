@@ -1,5 +1,4 @@
 namespace madake1.Common.Gacha;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader;
@@ -7,17 +6,14 @@ using Terraria.ModLoader.IO;
 
 public class GachaPlayer : ModPlayer
 {
-    // key = machineId（由 json 的 centerX+centerY 生成）
+    // Keyed by the stable machine ID, independent of its map coordinates.
     public Dictionary<string, GachaMachineData> machineData = new();
 
     public GachaMachineData GetData(string machineId)
     {
         if (!machineData.TryGetValue(machineId, out var data))
         {
-            data = new GachaMachineData
-            {
-                machineId = machineId
-            };
+            data = new GachaMachineData { machineId = machineId };
             machineData[machineId] = data;
         }
         return data;
