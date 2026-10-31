@@ -7,6 +7,7 @@
   <!-- Import ModSources/tModLoader.targets or the installed game's tMLMod.targets.
        The sibling tModLoader source tree uses a different build workflow. -->
   <Import Project="$(TmlTargetsPath)" />
+  <Import Project="Build.Local.targets" Condition="Exists('Build.Local.targets')" />
   <PropertyGroup>
     <AssemblyName>madake1</AssemblyName>
     <RootNamespace>madake1</RootNamespace>

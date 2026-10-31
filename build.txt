@@ -1,3 +1,4 @@
 displayName = mymod1
 author = madake
 version = 0.1
+buildIgnore = Maps/*, Backup/*, docs/*, README.md, Build.Local.props, Build.Local.props.example

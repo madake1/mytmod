@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "编译检查 madake1",
+      "type": "process",
+      "command": "${env:USERPROFILE}\\.dotnet\\dotnet.exe",
+      "args": [
+        "build",
+        "${workspaceFolder}/madake1.csproj",
+        "-p:BuildMod=false",
+        "-p:TargetFramework=net8.0"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "构建并安装 madake1（调试启动前）",
+      "type": "process",
+      "command": "${env:USERPROFILE}\\.dotnet\\dotnet.exe",
+      "args": [
+        "build",
+        "${env:USERPROFILE}\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\madake1\\madake1.csproj",
+        "-p:BuildMod=true",
+        "-p:TargetFramework=net8.0"
+      ],
+      "options": {
+        "env": {
+          "PATH": "${env:USERPROFILE}\\.dotnet;${env:PATH}",
+          "DOTNET_ROOT": "${env:USERPROFILE}\\.dotnet"
+        }
+      },
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

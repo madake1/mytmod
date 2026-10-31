@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
@@ -9,20 +10,30 @@ public sealed class AdventureWorldSystem : ModSystem
 {
     public const string AdventureMapId = "madake-adventure";
     public const int CurrentMapVersion = 1;
+    // Stored in the vanilla .wld header, so the distributed map needs no .twld marker.
+    private static readonly Guid BundledWorldId = new("4f238fb5-44c5-428c-932d-d394743e1a08");
+    private const int BundledWorldNumericId = 1527058634;
 
-    public static string MapId { get; private set; } = string.Empty;
-    public static int MapVersion { get; private set; }
+    private static string savedMapId = string.Empty;
+    private static int savedMapVersion;
+
+    private static bool IsBundledWorld => Main.worldID == BundledWorldNumericId
+        && Main.ActiveWorldFileData?.UniqueId == BundledWorldId;
+
+    public static string MapId => IsBundledWorld ? AdventureMapId : savedMapId;
+    public static int MapVersion => IsBundledWorld ? CurrentMapVersion : savedMapVersion;
     public static bool IsAdventureWorld => MapId == AdventureMapId && MapVersion >= 1;
 
     public override void ClearWorld()
     {
-        MapId = string.Empty;
-        MapVersion = 0;
+        savedMapId = string.Empty;
+        savedMapVersion = 0;
     }
 
     public override void SaveWorldData(TagCompound tag)
     {
-        if (!IsAdventureWorld)
+        // The bundled map is identified by its vanilla GUID. Keep .twld optional for it.
+        if (!IsAdventureWorld || IsBundledWorld)
             return;
 
         tag["mapId"] = MapId;
@@ -31,8 +42,8 @@ public sealed class AdventureWorldSystem : ModSystem
 
     public override void LoadWorldData(TagCompound tag)
     {
-        MapId = tag.GetString("mapId");
-        MapVersion = tag.GetInt("mapVersion");
+        savedMapId = tag.GetString("mapId");
+        savedMapVersion = tag.GetInt("mapVersion");
     }
 
     public override void NetSend(BinaryWriter writer)
@@ -43,13 +54,13 @@ public sealed class AdventureWorldSystem : ModSystem
 
     public override void NetReceive(BinaryReader reader)
     {
-        MapId = reader.ReadString();
-        MapVersion = reader.ReadInt32();
+        savedMapId = reader.ReadString();
+        savedMapVersion = reader.ReadInt32();
     }
 
     public static void MarkCurrentWorld()
     {
-        MapId = AdventureMapId;
-        MapVersion = CurrentMapVersion;
+        savedMapId = AdventureMapId;
+        savedMapVersion = CurrentMapVersion;
     }
 }

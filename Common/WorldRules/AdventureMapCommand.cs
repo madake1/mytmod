@@ -50,6 +50,6 @@ public sealed class AdventureMapCommand : ModCommand
         AdventureWorldSystem.MarkCurrentWorld();
         if (serverConsole)
             NetMessage.SendData(MessageID.WorldData);
-        caller.Reply($"已标记为 {AdventureWorldSystem.AdventureMapId} v{AdventureWorldSystem.CurrentMapVersion}。保存并退出世界后，保留 .wld 和 .twld 两个文件。");
+        caller.Reply($"已标记为 {AdventureWorldSystem.AdventureMapId} v{AdventureWorldSystem.CurrentMapVersion}。新建地图保存后仍需同时保留 .wld 和 .twld；内置冒险底图只需分发 .wld。");
     }
 }
