@@ -17,7 +17,7 @@ public sealed class AdventureWorldSystem : ModSystem
     private static string savedMapId = string.Empty;
     private static int savedMapVersion;
 
-    private static bool IsBundledWorld => Main.worldID == BundledWorldNumericId
+    internal static bool IsBundledWorld => Main.worldID == BundledWorldNumericId
         && Main.ActiveWorldFileData?.UniqueId == BundledWorldId;
 
     public static string MapId => IsBundledWorld ? AdventureMapId : savedMapId;
@@ -28,6 +28,7 @@ public sealed class AdventureWorldSystem : ModSystem
     {
         savedMapId = string.Empty;
         savedMapVersion = 0;
+        AdventureBuildPermission.AllowWorldSetup = false;
     }
 
     public override void SaveWorldData(TagCompound tag)

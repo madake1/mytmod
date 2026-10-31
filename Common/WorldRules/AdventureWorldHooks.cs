@@ -6,12 +6,13 @@ namespace madake1.Common.WorldRules;
 
 internal static class AdventureBuildPermission
 {
+    internal static bool AllowWorldSetup { get; set; }
     // Authoring is intentionally single-player only. Dedicated servers keep the map locked.
     public static bool CanEdit => Main.netMode == NetmodeID.SinglePlayer
         && Main.LocalPlayer?.active == true
         && Main.LocalPlayer.GetModPlayer<AuthorBadgePlayer>().HasAuthorBadge;
 
-    public static bool IsLocked => AdventureWorldSystem.IsAdventureWorld && !CanEdit;
+    public static bool IsLocked => AdventureWorldSystem.IsAdventureWorld && !CanEdit && !AllowWorldSetup;
 }
 
 public sealed class AdventureWorldTile : GlobalTile

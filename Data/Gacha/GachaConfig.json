@@ -2,10 +2,11 @@
   {
     "mapId": "madake-adventure",
     "machineId": "madake-adventure/gacha-01",
-    "displayName": "测试区·西侧扭蛋机",
-    "centerX": 1957,
-    "centerY": 235,
-    "radius": 16,
+    "displayName": "出生点·西侧扭蛋机",
+    "placeOnWorldLoad": true,
+    "centerX": 4195,
+    "centerY": 449,
+    "radius": 5,
     "rewardsRealGold": [
       {"item": "Jinxi", "count": 1},
       {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
@@ -39,10 +40,11 @@
   {
     "mapId": "madake-adventure",
     "machineId": "madake-adventure/gacha-02",
-    "displayName": "测试区·中央扭蛋机",
-    "centerX": 1989,
-    "centerY": 235,
-    "radius": 16,
+    "displayName": "出生点·东侧扭蛋机",
+    "placeOnWorldLoad": true,
+    "centerX": 4207,
+    "centerY": 449,
+    "radius": 5,
     "rewardsRealGold": [
       {"item": "Cunhaojian", "count": 1},
       {"item": "Cunhaojian", "count": 1}
@@ -73,10 +75,11 @@
   {
     "mapId": "madake-adventure",
     "machineId": "madake-adventure/gacha-03",
-    "displayName": "测试区·东侧扭蛋机",
-    "centerX": 2028,
-    "centerY": 235,
-    "radius": 16,
+    "displayName": "出生点·上层扭蛋机",
+    "placeOnWorldLoad": true,
+    "centerX": 4201,
+    "centerY": 437,
+    "radius": 5,
     "rewardsRealGold": [
       {"item": "Jinxi", "count": 1},
       {"item": "Changli", "count": 1}

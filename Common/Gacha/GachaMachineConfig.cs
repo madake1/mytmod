@@ -8,6 +8,7 @@ public class GachaMachineConfig
     public string mapId;
     public string machineId;
     public string displayName;
+    public bool placeOnWorldLoad;
     public int centerX;
     public int centerY;
     public int radius;

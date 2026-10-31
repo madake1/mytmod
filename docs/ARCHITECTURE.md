@@ -27,7 +27,7 @@
 - 内部模组名 `madake1`、内容类名、本地化键和存档字段保持不变。移动 C# 类时同步检查自动加载资源路径。
 - 现有物品/方块贴图保留在原路径。`Content/Items/Tiles` 是有意保留的兼容路径；将来迁移到 `Content/Tiles` 应同步迁移贴图或显式覆盖 Texture。
 - JSON 已从 `Sets/GachaConfig.json` 移到 `Data/Gacha/GachaConfig.json`，加载入口同步更新。
-- 机器用配置中的稳定 `machineId` 作为存档键，`mapId` 限定所属地图，`displayName` 是可修改的地点名称。移动机器或改名时保留 `machineId`。
+- 机器用配置中的稳定 `machineId` 作为存档键，`mapId` 限定所属地图，`displayName` 是可修改的地点名称。`placeOnWorldLoad` 的内置地图机器在 `PostWorldLoad` 放置，因此交付 `.wld` 只含原版地形。移动机器或改名时保留 `machineId`；已游玩世界的旧机器方块需另行清理。
 - 网络编号保留 0/1/2；未新增服务器权威抽卡协议，不声称兼容性或联机安全已经经过游戏验证。
 
 ## 增加功能的方法

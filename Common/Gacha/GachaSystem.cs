@@ -3,6 +3,7 @@ using System.IO;
 using System;
 using System.Linq;
 using madake1.Common.WorldRules;
+using madake1.Content.Items.Tiles;
 using Newtonsoft.Json;
 using Terraria;
 using Terraria.ModLoader;
@@ -38,6 +39,53 @@ namespace madake1.Common.Gacha
             {
                 Mod.Logger.Error($"加载扭蛋机配置失败: {ex}");
                 Main.NewText("未找到或解析 GachaConfig.json ❌");
+            }
+        }
+
+        public override void PostWorldLoad()
+        {
+            if (!AdventureWorldSystem.IsBundledWorld || Machines == null)
+                return;
+
+            int tileType = ModContent.TileType<GachaMachineTile>();
+            foreach (var machine in Machines.Where(m => m.placeOnWorldLoad && m.mapId == AdventureWorldSystem.MapId))
+            {
+                int left = machine.centerX - 2;
+                int top = machine.centerY - 4;
+                if (left < 0 || top < 0 || left + 3 >= Main.maxTilesX || machine.centerY + 1 >= Main.maxTilesY)
+                {
+                    Mod.Logger.Warn($"扭蛋机 {machine.machineId} 的坐标超出世界边界。");
+                    continue;
+                }
+
+                bool alreadyPlaced = true;
+                bool clear = true;
+                for (int x = left; x < left + 4; x++)
+                    for (int y = top; y < top + 5; y++)
+                    {
+                        var tile = Main.tile[x, y];
+                        alreadyPlaced &= tile.HasTile && tile.TileType == tileType;
+                        clear &= !tile.HasTile;
+                    }
+
+                if (alreadyPlaced)
+                    continue;
+                if (!clear)
+                {
+                    Mod.Logger.Warn($"扭蛋机 {machine.machineId} 的位置被方块占用，未自动放置。");
+                    continue;
+                }
+
+                AdventureBuildPermission.AllowWorldSetup = true;
+                try
+                {
+                    if (!WorldGen.PlaceObject(machine.centerX, machine.centerY, tileType, mute: true))
+                        Mod.Logger.Warn($"扭蛋机 {machine.machineId} 放置失败，请检查承重地面。");
+                }
+                finally
+                {
+                    AdventureBuildPermission.AllowWorldSetup = false;
+                }
             }
         }
 
