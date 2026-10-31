@@ -31,6 +31,8 @@ namespace madake1.Common.Gacha
                     throw new InvalidDataException("扭蛋机必须配置地图 ID、机器 ID 和名称。");
                 if (loaded.GroupBy(m => m.machineId, StringComparer.Ordinal).Any(g => g.Count() > 1))
                     throw new InvalidDataException("扭蛋机 ID 重复。");
+                if (loaded.Any(m => m.rewardsPurple == null || m.rewardsPurple.Count == 0))
+                    throw new InvalidDataException("每台扭蛋机都需要非空的紫色奖励池，以兑现十抽保底。");
                 Machines = loaded;
 
                 Main.NewText($"已加载扭蛋机数量: {Machines?.Count ?? 0}");

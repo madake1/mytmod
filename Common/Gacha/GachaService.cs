@@ -18,6 +18,7 @@ namespace madake1.Common.Gacha
             for (int i = 0; i < times; i++)
             {
                 var data = gachaPlayer.GetData(machineId);
+                bool purpleGuaranteeDue = data.pullsSinceLastPurple >= 9;
 
                 // ========================= 1. 判断品质 =========================
                 var quality = DetermineQuality(gachaPlayer, data, config, selectedRealGoldIndex);
@@ -109,8 +110,21 @@ namespace madake1.Common.Gacha
                     // Item.NewItem(player.GetSource_Misc("GachaTest"), player.position, itemType, stack);
                 }
 
+                // At the 80-pull gold guarantee, a 10-pull purple guarantee can
+                // become due on the same pull. Grant both rewards in that case.
+                bool grantedPurpleBonus = false;
+                if (purpleGuaranteeDue && quality != GachaQuality.Purple && config.rewardsPurple?.Count > 0)
+                {
+                    var purpleReward = config.rewardsPurple[Main.rand.Next(config.rewardsPurple.Count)];
+                    purpleReward.ParseItemType();
+                    results.Add(new GachaResult(purpleReward.itemType, purpleReward.count, GachaQuality.Purple));
+                    grantedPurpleBonus = true;
+                }
+
                 // ========================= 6. 更新计数 =========================
                 UpdateCounters(data, quality);
+                if (grantedPurpleBonus)
+                    data.pullsSinceLastPurple = 0;
             }
 
             return results;

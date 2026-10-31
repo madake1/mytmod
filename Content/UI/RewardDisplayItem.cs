@@ -40,6 +40,13 @@ public class RewardDisplayItem : UIElement
             dims.ToRectangle(),
             backgroundColor * 0.8f
         );
+        Rectangle bounds = dims.ToRectangle();
+        int outline = 2;
+        Color outlineColor = new Color(30, 20, 29);
+        spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(bounds.X, bounds.Y, bounds.Width, outline), outlineColor);
+        spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(bounds.X, bounds.Bottom - outline, bounds.Width, outline), outlineColor);
+        spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(bounds.X, bounds.Y, outline, bounds.Height), outlineColor);
+        spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(bounds.Right - outline, bounds.Y, outline, bounds.Height), outlineColor);
 
         // 选中高亮（更明显）
         if (Selected)
@@ -52,7 +59,7 @@ public class RewardDisplayItem : UIElement
                 Color.Yellow * 0.6f // 从0.3f增加到0.6f，更明显
             );
             // 绘制四个边框（更粗的边框，3像素）
-            int borderWidth = 3;
+            int borderWidth = 2;
             spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rect.X, rect.Y, rect.Width, borderWidth), Color.Yellow); // 上
             spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rect.X, rect.Y + rect.Height - borderWidth, rect.Width, borderWidth), Color.Yellow); // 下
             spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rect.X, rect.Y, borderWidth, rect.Height), Color.Yellow); // 左

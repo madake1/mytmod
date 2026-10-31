@@ -24,9 +24,11 @@ namespace madake1.Content.UI
 
         // ===== 大奖展示列表 =====
         private UIElement rewardContainer; 
-        private UIPanel rewardPanel;
+        private UIElement rareRewardContainer;
+        private UIElement rewardPanel;
         private UIText machineNameText;
         private UIText rewardTitleText;
+        private UIText rareRewardTitleText;
         private GachaMachineConfig currentMachine;
         private RewardDisplayItem selectedRewardItem; // 当前选中的奖励项（单选）
 
@@ -50,46 +52,58 @@ namespace madake1.Content.UI
             mainPanel.Append(panelBackground);
 
             // ================= 大奖展示区域 =================
-            rewardPanel = new UIPanel();
-            rewardPanel.Left.Set(10f, 0f);
-            rewardPanel.Top.Set(35f, 0f);
-            rewardPanel.Width.Set(380f, 0f);
-            rewardPanel.Height.Set(180f, 0f);
-            rewardPanel.BackgroundColor = new Color(0, 0, 0, 120);
-            rewardPanel.BorderColor = Color.Gold;
+            rewardPanel = new UIElement();
+            rewardPanel.Left.Set(40f, 0f);
+            rewardPanel.Top.Set(56f, 0f);
+            rewardPanel.Width.Set(320f, 0f);
+            rewardPanel.Height.Set(154f, 0f);
             mainPanel.Append(rewardPanel);
 
             machineNameText = new UIText("");
-            machineNameText.Left.Set(10f, 0f);
-            machineNameText.Top.Set(8f, 0f);
+            machineNameText.Left.Set(40f, 0f);
+            machineNameText.Top.Set(33f, 0f);
+            machineNameText.TextColor = new Color(75, 43, 24);
             mainPanel.Append(machineNameText);
 
             // "大奖"文字标签
             rewardTitleText = new UIText("本期UP！");
             rewardTitleText.Left.Set(10f, 0f);
-            rewardTitleText.Top.Set(5f, 0f);
-            rewardTitleText.TextColor = Color.Gold;
+            rewardTitleText.Top.Set(0f, 0f);
+            rewardTitleText.TextColor = new Color(129, 81, 18);
             rewardPanel.Append(rewardTitleText);
 
             // 奖励项容器（网格布局）
             rewardContainer = new UIElement();
-            rewardContainer.Left.Set(10f, 0f);
-            rewardContainer.Top.Set(28f, 0f);
-            rewardContainer.Width.Set(350f, 0f);
-            rewardContainer.Height.Set(140f, 0f);
+            rewardContainer.Left.Set(0f, 0f);
+            rewardContainer.Top.Set(24f, 0f);
+            rewardContainer.Width.Set(320f, 0f);
+            rewardContainer.Height.Set(50f, 0f);
             rewardPanel.Append(rewardContainer);
+
+            rareRewardTitleText = new UIText("每10抽必得以下稀有物品之一", 0.85f);
+            rareRewardTitleText.Left.Set(0f, 0f);
+            rareRewardTitleText.Top.Set(80f, 0f);
+            rareRewardTitleText.TextColor = new Color(100, 45, 137);
+            rewardPanel.Append(rareRewardTitleText);
+
+            rareRewardContainer = new UIElement();
+            rareRewardContainer.Left.Set(0f, 0f);
+            rareRewardContainer.Top.Set(104f, 0f);
+            rareRewardContainer.Width.Set(320f, 0f);
+            rareRewardContainer.Height.Set(50f, 0f);
+            rewardPanel.Append(rareRewardContainer);
 
             // ================= 按钮容器 =================
             UIElement buttonContainer = new UIElement();
             float buttonWidth = 58f;
             float buttonHeight = 30f;
-            float spacing = 12f;
+            float spacing = 72f;
 
             buttonContainer.Width.Set(buttonWidth * 2 + spacing, 0f);
             buttonContainer.Height.Set(buttonHeight, 0f);
             buttonContainer.HAlign = 0.5f;
             buttonContainer.VAlign = 1f;
-            buttonContainer.Top.Set(-10f, 0f);
+            buttonContainer.Top.Set(-19f, 0f);
             mainPanel.Append(buttonContainer);
 
             // ================= 单抽按钮 =================
@@ -143,9 +157,9 @@ namespace madake1.Content.UI
 
             // ================= 金球计数文本 =================
             goldCounterText = new UIText("0/80");
-            goldCounterText.Left.Set(mainPanel.Width.Pixels - 100f, 0f); // 关闭按钮左边约 60-70 px
-            goldCounterText.Top.Set(8f, 0f); // 与关闭按钮垂直对齐
-            goldCounterText.TextColor = Color.Gold;
+            goldCounterText.Left.Set(mainPanel.Width.Pixels - 100f, 0f);
+            goldCounterText.Top.Set(33f, 0f);
+            goldCounterText.TextColor = new Color(107, 68, 20);
             mainPanel.Append(goldCounterText);
 
         }
@@ -169,31 +183,30 @@ namespace madake1.Content.UI
 
             if (rewardContainer == null) return;
             rewardContainer.RemoveAllChildren();
+            rareRewardContainer.RemoveAllChildren();
             if (currentMachine == null || currentMachine.rewardsRealGold == null) return;
 
             // 读取玩家上次选择
             int? savedIndex = Main.LocalPlayer.GetModPlayer<GachaPlayer>().GetSelectedReward(currentMachine.GetMachineId());
 
             int columns = 5;
-            int rows = 2;
-            float itemSize = 60f;
-            float spacing = 10f;
+            float itemSize = 50f;
+            float spacing = 12f;
             int index = 0;
 
             foreach (var reward in currentMachine.rewardsRealGold)
             {
-                if (index >= rows * columns) break;
+                if (index >= columns) break;
                 reward.ParseItemType();
                 Item item = new Item();
                 item.SetDefaults(reward.itemType);
                 RewardDisplayItem uiItem = new RewardDisplayItem(item, reward.count, Color.Gold, selectable: true);
 
-                int col = index % columns;
-                int row = index / columns;
-                uiItem.Left.Set(col * (itemSize + spacing), 0f);
-                uiItem.Top.Set(row * (itemSize + spacing), 0f);
+                uiItem.Left.Set(index * (itemSize + spacing), 0f);
+                uiItem.Top.Set(0f, 0f);
 
-                uiItem.OnLeftClick += (evt, elm) => { SelectRewardItem(uiItem); };
+                int rewardIndex = index;
+                uiItem.OnLeftClick += (evt, elm) => { SelectRewardItem(uiItem, rewardIndex); };
 
                 // 初始化选中状态
                 if (savedIndex.HasValue && index == savedIndex.Value)
@@ -206,13 +219,28 @@ namespace madake1.Content.UI
                 rewardContainer.Append(uiItem);
                 index++;
             }
+            if (currentMachine.rewardsPurple != null)
+            {
+                index = 0;
+                foreach (var reward in currentMachine.rewardsPurple)
+                {
+                    if (index >= columns) break;
+                    reward.ParseItemType();
+                    Item item = new Item();
+                    item.SetDefaults(reward.itemType);
+                    RewardDisplayItem uiItem = new RewardDisplayItem(item, reward.count, new Color(153, 77, 194));
+                    uiItem.Left.Set(index * (itemSize + spacing), 0f);
+                    rareRewardContainer.Append(uiItem);
+                    index++;
+                }
+            }
             var data = Main.LocalPlayer.GetModPlayer<GachaPlayer>().GetData(machine.GetMachineId());
             UpdateGoldCounter(data.pullsSinceLastGold, 80);
 
         }
 
         // ================ 选择奖励项（单选逻辑） =================
-        private void SelectRewardItem(RewardDisplayItem item)
+        private void SelectRewardItem(RewardDisplayItem item, int selectedIndex)
         {
             Player player = Main.LocalPlayer;
             string machineId = currentMachine.GetMachineId();
@@ -237,8 +265,7 @@ namespace madake1.Content.UI
             UpdateRewardTitleText();
 
             // 保存选中索引
-            int selectedIndex = currentMachine.rewardsRealGold.FindIndex(r => r.itemType == item.DisplayItem.type);
-            player.GetModPlayer<GachaPlayer>().SetSelectedReward(machineId, selectedIndex >= 0 ? selectedIndex : -1);
+            player.GetModPlayer<GachaPlayer>().SetSelectedReward(machineId, selectedIndex);
         }
 
         // ================== 更新大奖文字 =================
