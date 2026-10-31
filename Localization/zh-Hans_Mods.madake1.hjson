@@ -1,4 +1,9 @@
 Items: {
+	AuthorBadge: {
+		DisplayName: 作者身份证
+		Tooltip: 装备在功能饰品栏时，可在冒险地图编辑地形（仅单人模式）
+	}
+
 	Jinxi: {
 		DisplayName: 武器1
 		Tooltip: 测试

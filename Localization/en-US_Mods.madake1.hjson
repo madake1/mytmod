@@ -1,4 +1,9 @@
 Items: {
+	AuthorBadge: {
+		DisplayName: Author ID
+		Tooltip: Equip in a functional accessory slot to edit adventure worlds (single-player only)
+	}
+
 	Jinxi: {
 		DisplayName: Jinxi
 		Tooltip: ""
