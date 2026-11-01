@@ -121,9 +121,9 @@ public sealed class AdventurePylonTile : ModPylon
             || !Main.LocalPlayer.GetModPlayer<AdventurePlayer>().HasCrystal(CrystalWorldSystem.StationKey(station)))
             return;
         float pulse = 0.5f + 0.5f * (float)Math.Cos(Main.GameUpdateCount * Math.PI / 72d);
-        r = 0.20f + pulse * 0.08f;
-        g = 0.37f + pulse * 0.13f;
-        b = 0.62f + pulse * 0.16f;
+        r = 0.5f + pulse * 0.08f;
+        g = 0.8f + pulse * 0.13f;
+        b = 0.7f + pulse * 0.16f;
     }
 
     public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
@@ -148,8 +148,11 @@ public sealed class AdventurePylonTile : ModPylon
 
         int frame = (int)(Main.GameUpdateCount / 12 % CrystalBob.Length);
         Vector2 origin = new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + 2) + offset;
-        spriteBatch.Draw(glowTexture.Value,
-            origin + new Vector2(-8, -8), new Rectangle(0, frame * 80, 64, 80), Color.White);
+        Texture2D glow = glowTexture.Value;
+        int glowFrameHeight = glow.Height / CrystalBob.Length;
+        spriteBatch.Draw(glow,
+            origin - new Vector2((glow.Width - 48) / 2f, (glowFrameHeight - 64) / 2f),
+            new Rectangle(0, frame * glowFrameHeight, glow.Width, glowFrameHeight), Color.White);
         spriteBatch.Draw(unlockedTexture.Value, origin, null, Lighting.GetColor(i, j));
         spriteBatch.Draw(crystalBodyTexture.Value, origin + new Vector2(0, CrystalBob[frame]),
             null, Color.Lerp(Lighting.GetColor(i, j), Color.White, 0.7f));

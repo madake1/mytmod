@@ -12,13 +12,14 @@ $drawingAssemblies = if ($PSVersionTable.PSEdition -eq 'Desktop') {
     @('System.Drawing.Common', 'System.Drawing.Primitives', 'System.Private.Windows.GdiPlus', 'System.Private.Windows.Core', 'System.Runtime')
 }
 
-Add-Type -ReferencedAssemblies $drawingAssemblies -TypeDefinition @'
+$artSource = @'
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 
 public static class AdventurePylonArt {
-    const int W = 48, H = 64, Count = 12, GlowW = 64, GlowH = 80;
+    const int W = 48, H = 64, Count = 12, GlowW = 160, GlowH = 192;
+    const int GlowOffsetX = (GlowW-W)/2, GlowOffsetY = (GlowH-H)/2;
     static readonly int[] Bob = { 0, 0, -1, -1, -1, -1, 0, 0, 1, 1, 1, 1 };
 
     static Bitmap Unpack(Bitmap packed) {
@@ -93,12 +94,12 @@ public static class AdventurePylonArt {
         }
     }
     static Bitmap MakeGlow(Bitmap body) {
-        const double GlowStrength = 100.0; // Overall visible halo brightness.
+        const double GlowStrength = 160.0; // Overall visible halo brightness.
         Bitmap sheet=new Bitmap(GlowW,GlowH*Count,PixelFormat.Format32bppArgb);
         for(int f=0;f<Count;f++) {
             double pulse=0.5+0.5*Math.Cos(f*Math.PI*2/Count);
             for(int y=0;y<GlowH;y++) for(int x=0;x<GlowW;x++) {
-                int bx=x-8, by=y-8-Bob[f];
+                int bx=x-GlowOffsetX, by=y-GlowOffsetY-Bob[f];
                 if(bx>=0 && bx<W && by>=0 && by<H && body.GetPixel(bx,by).A>128) continue;
                 int nearestSquared=100;
                 for(int dy=-8;dy<=8;dy++) for(int dx=-8;dx<=8;dx++) {
@@ -108,10 +109,12 @@ public static class AdventurePylonArt {
                     if(d<nearestSquared) nearestSquared=d;
                 }
                 double edgeGlow=nearestSquared<=64
-                    ? GlowStrength*Math.Exp(-nearestSquared/30.0) : 0.0;
-                double ellipse=Math.Pow((bx-24.0)/11.0,2)+Math.Pow((by-22.0)/16.0,2);
-                double wideGlow=GlowStrength*0.35*Math.Exp(-ellipse/2.0);
-                int alpha=(int)(Math.Max(edgeGlow,wideGlow)*(0.55+0.45*pulse));
+                    ? GlowStrength*0.4*Math.Exp(-nearestSquared/30.0) : 0.0;
+                double ellipse=Math.Pow((bx-24.0)/30.0,2)+Math.Pow((by-22.0)/35.0,2);
+                double wideGlow=GlowStrength*0.6*Math.Exp(-ellipse/2.0);
+                int alpha=Math.Min(255,(int)(Math.Max(edgeGlow,wideGlow)*(0.55+0.45*pulse)));
+                int border=Math.Min(Math.Min(x,GlowW-1-x),Math.Min(y,GlowH-1-y));
+                alpha=(int)(alpha*Math.Min(1.0,border/4.0));
                 // Terraria's tile batch uses premultiplied alpha. Store RGB multiplied
                 // by A, otherwise faint pixels appear as an opaque cyan outline.
                 if(alpha>0) sheet.SetPixel(x,y+f*GlowH,Color.FromArgb(alpha,
@@ -161,7 +164,7 @@ public static class AdventurePylonArt {
                         int px=240+f*192;
                         DrawNearest(g,baseTile,px,0);
                         int frame=f==0?0:4;
-                        g.DrawImage(previewGlow,new Rectangle(px-32,-32,256,320),
+                        g.DrawImage(previewGlow,new Rectangle(px-GlowOffsetX*4,-GlowOffsetY*4,GlowW*4,GlowH*4),
                             new Rectangle(0,frame*GlowH,GlowW,GlowH),GraphicsUnit.Pixel);
                         g.DrawImage(body,new Rectangle(px,f==0?0:-4,192,256),new Rectangle(0,0,W,H),GraphicsUnit.Pixel);
                         DrawNearest(g,ring,px,0);
@@ -174,11 +177,19 @@ public static class AdventurePylonArt {
 }
 '@
 
-[AdventurePylonArt]::Build(
-    (Join-Path $sourceDir 'AdventurePylonTile_Locked.png'),
-    (Join-Path $sourceDir 'AdventurePylonTile_Unlocked.png'),
-    $assetDir,
-    $preview)
+# Add-Type keeps compiled types for the lifetime of a PowerShell session. Give
+# each run a unique name so edits to this script work without reopening the shell.
+$artTypeName = 'AdventurePylonArt_' + [Guid]::NewGuid().ToString('N')
+$artSource = $artSource.Replace('AdventurePylonArt', $artTypeName)
+Add-Type -ReferencedAssemblies $drawingAssemblies -TypeDefinition $artSource
+$artType = [Type]$artTypeName
+$lockedPath = [string](Join-Path $sourceDir 'AdventurePylonTile_Locked.png')
+$unlockedPath = [string](Join-Path $sourceDir 'AdventurePylonTile_Unlocked.png')
+$artType.GetMethod('Build').Invoke($null, [object[]]@(
+    $lockedPath,
+    $unlockedPath,
+    [string]$assetDir,
+    [string]$preview))
 
 # MouseOver displays the placeable item's texture. Use the gray version of the
 # same simple crystal silhouette as the blue map icon.
