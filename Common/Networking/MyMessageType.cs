@@ -5,6 +5,9 @@ namespace madake1.Common.Networking
     {
         GachaRequest = 0,
         GachaResult = 1,
-        GoldDrop = 2
+        GoldDrop = 2,
+        AdventureState = 3,
+        AdventureAction = 4,
+        AdventureNotice = 5
     }
 }

@@ -71,7 +71,7 @@ namespace madake1.Content.UI
 
             UIText permanentTitle = new UIText("本期常驻", 0.8f);
             permanentTitle.Left.Set(46f, 0f);
-            permanentTitle.Top.Set(128f, 0f);
+            permanentTitle.Top.Set(138f, 0f);
             permanentTitle.TextColor = new Color(129, 81, 18);
             mainPanel.Append(permanentTitle);
 

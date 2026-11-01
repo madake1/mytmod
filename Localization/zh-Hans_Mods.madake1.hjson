@@ -63,10 +63,16 @@ Items: {
 		// DisplayName: Teleport Tower Item
 		// Tooltip: ""
 	}
+
+	AdventurePylonItem: {
+		DisplayName: 传送水晶
+		Tooltip: 作者放置后，玩家右键解锁并打开传送地图
+	}
 }
 
 Tiles: {
 	GachaMachineTile.MapEntry: Gacha Machine Tile
+	AdventurePylonTile.MapEntry: 传送水晶
 	// TeleportTowerTile.MapEntry: Teleport Tower Tile
 }
 

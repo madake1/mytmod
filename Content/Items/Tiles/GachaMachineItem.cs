@@ -3,6 +3,8 @@ using Terraria.ModLoader;
 namespace madake1.Content.Items.Tiles {
     public class GachaMachineItem : ModItem
     {
+        public override string Texture => $"Terraria/Images/Item_{ItemID.StoneBlock}";
+
         public override void SetStaticDefaults()
         {
 

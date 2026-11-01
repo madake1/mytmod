@@ -6,6 +6,7 @@ using madake1.Common.Networking;
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using madake1.Common.Adventure;
 
 namespace madake1.Common.Networking
 {
@@ -19,6 +20,11 @@ namespace madake1.Common.Networking
 
                 switch (type)
                 {
+                    case MyMessageType.AdventureState:
+                    case MyMessageType.AdventureAction:
+                    case MyMessageType.AdventureNotice:
+                        AdventurePackets.Handle(type, reader, whoAmI);
+                        break;
                     case MyMessageType.GachaResult:
                         HandleGachaResult(reader, whoAmI);
                         break;

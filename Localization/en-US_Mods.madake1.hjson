@@ -63,10 +63,16 @@ Items: {
 		DisplayName: Teleport Tower Item
 		Tooltip: ""
 	}
+
+	AdventurePylonItem: {
+		DisplayName: Travel Crystal
+		Tooltip: Right-click the placed crystal to unlock it and open the travel map
+	}
 }
 
 Tiles: {
 	GachaMachineTile.MapEntry: Gacha Machine Tile
+	AdventurePylonTile.MapEntry: Travel Crystal
 	TeleportTowerTile.MapEntry: Teleport Tower Tile
 }
 
