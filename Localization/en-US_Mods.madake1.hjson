@@ -68,6 +68,11 @@ Items: {
 		DisplayName: Travel Crystal
 		Tooltip: Right-click the placed crystal to unlock it and open the travel map
 	}
+
+	AdventurePylonUnlockedHoverItem: {
+		DisplayName: Adventure Pylon Unlocked Hover Item
+		Tooltip: ""
+	}
 }
 
 Tiles: {

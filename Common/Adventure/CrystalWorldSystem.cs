@@ -13,14 +13,21 @@ public sealed class CrystalWorldSystem : ModSystem
 {
     private const int InteractionRadius = 8;
 
-    public static string StationKey(Point16 topLeft) => $"{topLeft.X}:{topLeft.Y}";
+    public static string StationKey(Point16 topLeft)
+    {
+        if (!TileEntity.ByPosition.TryGetValue(topLeft, out TileEntity entity)
+            || entity is not AdventurePylonEntity pylon)
+            return string.Empty;
+        return $"{topLeft.X}:{topLeft.Y}:{pylon.StationId:N}";
+    }
 
     public static bool IsStationKey(string key, out Point16 topLeft)
     {
         topLeft = default;
         string[] parts = key?.Split(':');
-        if (parts?.Length != 2 || !short.TryParse(parts[0], out short x)
+        if (parts?.Length != 3 || !short.TryParse(parts[0], out short x)
             || !short.TryParse(parts[1], out short y)
+            || !Guid.TryParseExact(parts[2], "N", out _)
             || x < 1 || y < 1 || x >= Main.maxTilesX - 3 || y >= Main.maxTilesY - 4)
             return false;
         topLeft = new Point16(x, y);
@@ -33,7 +40,8 @@ public sealed class CrystalWorldSystem : ModSystem
         if (!TileEntity.ByPosition.TryGetValue(topLeft, out TileEntity entity)
             || entity is not AdventurePylonEntity pylon)
             return false;
-        return pylon.IsTileValidForEntity(topLeft.X, topLeft.Y);
+        return pylon.IsTileValidForEntity(topLeft.X, topLeft.Y)
+            && key == StationKey(topLeft);
     }
 
     public static bool TryGetStationAtTile(int i, int j, out Point16 topLeft)
@@ -51,6 +59,16 @@ public sealed class CrystalWorldSystem : ModSystem
     public static bool IsPlayerNear(Player player, Point16 station)
         => Vector2.Distance(player.Center, new Vector2((station.X + 1.5f) * 16f, (station.Y + 2f) * 16f))
             <= InteractionRadius * 16f;
+
+    public static void RevokeStationAt(Point16 topLeft)
+    {
+        string key = StationKey(topLeft);
+        if (key.Length == 0) return;
+        foreach (Player player in Main.player)
+            if (player?.active == true && player.GetModPlayer<AdventurePlayer>().RemoveCrystal(key)
+                && Main.netMode == NetmodeID.Server)
+                AdventurePackets.SendPlayerState(player, player.whoAmI);
+    }
 
     public static bool HasUnlockedStationNearby(Player player, AdventurePlayer progress)
         => TileEntity.ByPosition.Values.OfType<AdventurePylonEntity>().Any(pylon =>

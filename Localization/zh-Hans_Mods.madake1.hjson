@@ -68,6 +68,11 @@ Items: {
 		DisplayName: 传送水晶
 		Tooltip: 作者放置后，玩家右键解锁并打开传送地图
 	}
+
+	AdventurePylonUnlockedHoverItem: {
+		// DisplayName: Adventure Pylon Unlocked Hover Item
+		// Tooltip: ""
+	}
 }
 
 Tiles: {

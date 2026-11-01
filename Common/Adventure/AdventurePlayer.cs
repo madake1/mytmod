@@ -33,6 +33,10 @@ public sealed class AdventurePlayer : ModPlayer
 
     public bool HasCrystal(string id) => Current?.crystals.Contains(id) == true;
     public bool UnlockCrystal(string id) => Current?.crystals.Add(id) == true;
+    public bool RemoveCrystal(string id) => Current?.crystals.Remove(id) == true;
+
+    private void PruneMissingCrystals()
+        => Current?.crystals.RemoveWhere(id => !CrystalWorldSystem.TryGetStation(id, out _));
     // 0 = unavailable, 1 = accepted, 2 = completed and reward claimed.
     public int QuestStage(string id) => Current?.quests.GetValueOrDefault(id) ?? 0;
     public void SetQuestStage(string id, int stage)
@@ -72,7 +76,10 @@ public sealed class AdventurePlayer : ModPlayer
 
     public override void OnEnterWorld()
     {
-        if (Main.netMode == NetmodeID.MultiplayerClient && AdventureWorldSystem.IsAdventureWorld)
+        if (!AdventureWorldSystem.IsAdventureWorld) return;
+        if (Main.netMode == NetmodeID.SinglePlayer)
+            PruneMissingCrystals();
+        else if (Main.netMode == NetmodeID.MultiplayerClient)
             AdventurePackets.SendPlayerState(Player);
     }
 

@@ -70,6 +70,8 @@ internal static class AdventurePackets
             if (scope != AdventureWorldSystem.ProgressScope || string.IsNullOrEmpty(scope)) return;
             Player player = Main.netMode == NetmodeID.Server ? Main.player[whoAmI] : Main.LocalPlayer;
             player.GetModPlayer<AdventurePlayer>().ReplaceCurrent(crystals, quests);
+            if (Main.netMode == NetmodeID.Server)
+                SendPlayerState(player, whoAmI);
             return;
         }
         if (type == MyMessageType.AdventureAction && Main.netMode == NetmodeID.Server)

@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using madake1.Common.WorldRules;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,17 +12,41 @@ using Terraria.ID;
 using Terraria.Map;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Default;
+using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 
 namespace madake1.Common.Adventure;
 
 // Tile layout and artwork follow ExampleMod's ExamplePylonTile. The station rules are ours.
-public sealed class AdventurePylonEntity : TEModdedPylon { }
+public sealed class AdventurePylonEntity : TEModdedPylon
+{
+    internal Guid StationId { get; private set; } = Guid.NewGuid();
+
+    public override void SaveData(TagCompound tag) => tag["stationId"] = StationId.ToString("N");
+
+    public override void LoadData(TagCompound tag)
+    {
+        if (Guid.TryParseExact(tag.GetString("stationId"), "N", out Guid id))
+            StationId = id;
+    }
+
+    public override void NetSend(BinaryWriter writer) => writer.Write(StationId.ToString("N"));
+
+    public override void NetReceive(BinaryReader reader)
+    {
+        if (Guid.TryParseExact(reader.ReadString(), "N", out Guid id))
+            StationId = id;
+    }
+}
 
 public sealed class AdventurePylonTile : ModPylon
 {
+    private static readonly int[] CrystalBob = { 0, 0, -1, -1, -1, -1, 0, 0, 1, 1, 1, 1 };
     private Asset<Texture2D> lockedTexture;
     private Asset<Texture2D> unlockedTexture;
+    private Asset<Texture2D> crystalBodyTexture;
+    private Asset<Texture2D> ringForegroundTexture;
+    private Asset<Texture2D> glowTexture;
     private Asset<Texture2D> mapIcon;
 
     public override void Load()
@@ -28,6 +54,9 @@ public sealed class AdventurePylonTile : ModPylon
         if (Main.dedServ) return;
         lockedTexture = ModContent.Request<Texture2D>(Texture);
         unlockedTexture = ModContent.Request<Texture2D>(Texture + "_Unlocked");
+        crystalBodyTexture = ModContent.Request<Texture2D>(Texture + "_CrystalBody");
+        ringForegroundTexture = ModContent.Request<Texture2D>(Texture + "_RingForeground");
+        glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow");
         mapIcon = ModContent.Request<Texture2D>(Texture + "_MapIcon");
     }
 
@@ -56,12 +85,15 @@ public sealed class AdventurePylonTile : ModPylon
 
     public override bool RightClick(int i, int j)
     {
-        if (AdventureWorldSystem.IsAdventureWorld
-            && CrystalWorldSystem.TryGetStationAtTile(i, j, out var station))
+        if (!AdventureWorldSystem.IsAdventureWorld
+            || !CrystalWorldSystem.TryGetStationAtTile(i, j, out var station))
+            return true;
+
+        string key = CrystalWorldSystem.StationKey(station);
+        if (!Main.LocalPlayer.GetModPlayer<AdventurePlayer>().HasCrystal(key))
         {
-            string key = CrystalWorldSystem.StationKey(station);
-            if (!Main.LocalPlayer.GetModPlayer<AdventurePlayer>().HasCrystal(key))
-                AdventurePackets.Request(AdventureAction.UnlockCrystal, key);
+            AdventurePackets.Request(AdventureAction.UnlockCrystal, key);
+            return true;
         }
         return base.RightClick(i, j);
     }
@@ -69,20 +101,29 @@ public sealed class AdventurePylonTile : ModPylon
     public override void MouseOver(int i, int j)
     {
         Main.LocalPlayer.cursorItemIconEnabled = true;
-        Main.LocalPlayer.cursorItemIconID = ModContent.ItemType<AdventurePylonItem>();
+        bool unlocked = AdventureWorldSystem.IsAdventureWorld
+            && CrystalWorldSystem.TryGetStationAtTile(i, j, out var station)
+            && Main.LocalPlayer.GetModPlayer<AdventurePlayer>().HasCrystal(CrystalWorldSystem.StationKey(station));
+        Main.LocalPlayer.cursorItemIconID = unlocked
+            ? ModContent.ItemType<AdventurePylonUnlockedHoverItem>()
+            : ModContent.ItemType<AdventurePylonItem>();
     }
 
     public override void KillMultiTile(int i, int j, int frameX, int frameY)
-        => ModContent.GetInstance<AdventurePylonEntity>().Kill(i, j);
+    {
+        CrystalWorldSystem.RevokeStationAt(new Point16(i, j));
+        ModContent.GetInstance<AdventurePylonEntity>().Kill(i, j);
+    }
 
     public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
     {
         if (Main.dedServ || !CrystalWorldSystem.TryGetStationAtTile(i, j, out var station)
             || !Main.LocalPlayer.GetModPlayer<AdventurePlayer>().HasCrystal(CrystalWorldSystem.StationKey(station)))
             return;
-        r = 0.13f;
-        g = 0.22f;
-        b = 0.5f;
+        float pulse = 0.5f + 0.5f * (float)Math.Cos(Main.GameUpdateCount * Math.PI / 72d);
+        r = 0.20f + pulse * 0.08f;
+        g = 0.37f + pulse * 0.13f;
+        b = 0.62f + pulse * 0.16f;
     }
 
     public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
@@ -91,11 +132,29 @@ public sealed class AdventurePylonTile : ModPylon
         var station = new Point16(i - tile.TileFrameX / 18, j - tile.TileFrameY / 18);
         bool unlocked = AdventureWorldSystem.IsAdventureWorld
             && Main.LocalPlayer.GetModPlayer<AdventurePlayer>().HasCrystal(CrystalWorldSystem.StationKey(station));
-        Texture2D texture = (unlocked ? unlockedTexture : lockedTexture).Value;
         Vector2 offset = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
-        spriteBatch.Draw(texture,
-            new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + 2) + offset,
-            new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, 16), Lighting.GetColor(i, j));
+        if (!unlocked)
+        {
+            spriteBatch.Draw(lockedTexture.Value,
+                new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + 2) + offset,
+                new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, 16), Lighting.GetColor(i, j));
+            return false;
+        }
+
+        // Draw the whole unlocked pylon from its top-left tile. Drawing the crystal in
+        // SpecialDraw was skipped by the tile renderer when PreDraw returned false.
+        if (tile.TileFrameX != 0 || tile.TileFrameY != 0)
+            return false;
+
+        int frame = (int)(Main.GameUpdateCount / 12 % CrystalBob.Length);
+        Vector2 origin = new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + 2) + offset;
+        spriteBatch.Draw(glowTexture.Value,
+            origin + new Vector2(-8, -8), new Rectangle(0, frame * 80, 64, 80), Color.White);
+        spriteBatch.Draw(unlockedTexture.Value, origin, null, Lighting.GetColor(i, j));
+        spriteBatch.Draw(crystalBodyTexture.Value, origin + new Vector2(0, CrystalBob[frame]),
+            null, Color.Lerp(Lighting.GetColor(i, j), Color.White, 0.7f));
+        spriteBatch.Draw(ringForegroundTexture.Value, origin,
+            null, Lighting.GetColor(i, j));
         return false;
     }
 
