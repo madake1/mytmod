@@ -4,8 +4,8 @@ Items: {
 		Tooltip: 装备在功能饰品栏时，可在冒险地图编辑地形（仅单人模式）
 	}
 
-	Jinxi: {
-		DisplayName: 武器1
+	test1: {
+		DisplayName: test1
 		Tooltip: 测试
 	}
 
@@ -24,9 +24,29 @@ Items: {
 		// Tooltip: ""
 	}
 
-	Changli: {
-		DisplayName: 武器2
+	test2: {
+		DisplayName: test2
 		Tooltip: 测试
+	}
+
+	PlatinumArmorSetBundle: {
+		DisplayName: 铂金套装包
+		Tooltip: 右键打开，获得铂金头盔、链甲和护胫
+	}
+
+	GoldArmorSetBundle: {
+		DisplayName: 金套装包
+		Tooltip: 右键打开，获得金头盔、链甲和护胫
+	}
+
+	RoninArmorSetBundle: {
+		DisplayName: 浪人套装包
+		Tooltip: 右键打开，获得浪人外观三件套
+	}
+
+	WolfArmorSetBundle: {
+		DisplayName: 狼套装包
+		Tooltip: 右键打开，获得狼外观三件套
 	}
 
 	Cunhaojian: {

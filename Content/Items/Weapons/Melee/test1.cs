@@ -6,23 +6,25 @@ using Terraria.ModLoader;
 
 namespace madake1.Content.Items.Weapons.Melee
 {
-    public class Changli : ModItem
+    [LegacyName("Jinxi")]
+    public class test1 : ModItem
     {
         public override void SetDefaults()
         {
             Item.CloneDefaults(Terraria.ID.ItemID.Muramasa);
-
+            
             Item.damage *= 2;
             Item.shootSpeed *= 0.8f;
         }
 
-        public override void AddRecipes()
-        {
-            var recipe = CreateRecipe();
-            recipe.AddIngredient(Terraria.ID.ItemID.StoneBlock, 10);
-            recipe.AddTile(Terraria.ID.TileID.WorkBenches);
-            recipe.Register();
-        }
-
+        // 物品合成表的设置部分
+    public override void AddRecipes()
+    {
+        var recipe = CreateRecipe();
+        recipe.AddIngredient(Terraria.ID.ItemID.DirtBlock, 10);       
+        recipe.AddTile(Terraria.ID.TileID.WorkBenches);
+        recipe.Register();
+    }
+        
     }
 }

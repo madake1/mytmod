@@ -4,8 +4,8 @@ Items: {
 		Tooltip: Equip in a functional accessory slot to edit adventure worlds (single-player only)
 	}
 
-	Jinxi: {
-		DisplayName: Jinxi
+	test1: {
+		DisplayName: test1
 		Tooltip: ""
 	}
 
@@ -24,9 +24,29 @@ Items: {
 		Tooltip: ""
 	}
 
-	Changli: {
-		DisplayName: Changli
+	test2: {
+		DisplayName: test2
 		Tooltip: ""
+	}
+
+	PlatinumArmorSetBundle: {
+		DisplayName: Platinum Armor Set Bundle
+		Tooltip: Right-click to receive the platinum armor set
+	}
+
+	GoldArmorSetBundle: {
+		DisplayName: Gold Armor Set Bundle
+		Tooltip: Right-click to receive the gold armor set
+	}
+
+	RoninArmorSetBundle: {
+		DisplayName: Ronin Set Bundle
+		Tooltip: Right-click to receive the three-piece ronin vanity set
+	}
+
+	WolfArmorSetBundle: {
+		DisplayName: Wolf Set Bundle
+		Tooltip: Right-click to receive the three-piece wolf vanity set
 	}
 
 	Cunhaojian: {

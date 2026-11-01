@@ -8,18 +8,30 @@
     "centerY": 449,
     "radius": 5,
     "rewardsRealGold": [
-      {"item": "Jinxi", "count": 1},
+      {"item": "test1", "count": 1},
       {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
       {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
       {"item": "Terraria.ID.ItemID.Sandgun", "count": 1},
       {"item": "Terraria.ID.ItemID.Sandgun", "count": 1}
     ],
     "rewardsGold": [
+      {"item": "PlatinumArmorSetBundle", "count": 1},
+      {"item": "GoldArmorSetBundle", "count": 1},
+      {"item": "RoninArmorSetBundle", "count": 1},
+      {"item": "WolfArmorSetBundle", "count": 1},
       {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
+      {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
+      {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
+      {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
       {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
       {"item": "Terraria.ID.ItemID.NightsEdge", "count": 1}
     ],
     "rewardsPurple": [
+      {"item": "RoninArmorSetBundle", "count": 1},
+      {"item": "WolfArmorSetBundle", "count": 1},
       {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
       {"item": "Terraria.ID.ItemID.WoodenSword", "count": 1}
 
@@ -50,11 +62,17 @@
       {"item": "Cunhaojian", "count": 1}
     ],
     "rewardsGold": [
+      {"item": "PlatinumArmorSetBundle", "count": 1},
+      {"item": "GoldArmorSetBundle", "count": 1},
+      {"item": "RoninArmorSetBundle", "count": 1},
+      {"item": "WolfArmorSetBundle", "count": 1},
       {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
       {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
       {"item": "Terraria.ID.ItemID.NightsEdge", "count": 1}
     ],
     "rewardsPurple": [
+      {"item": "RoninArmorSetBundle", "count": 1},
+      {"item": "WolfArmorSetBundle", "count": 1},
       {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
       {"item": "Terraria.ID.ItemID.BoneSword", "count": 1},
       {"item": "Terraria.ID.ItemID.Cutlass", "count": 1}
@@ -81,15 +99,21 @@
     "centerY": 437,
     "radius": 5,
     "rewardsRealGold": [
-      {"item": "Jinxi", "count": 1},
-      {"item": "Changli", "count": 1}
+      {"item": "test1", "count": 1},
+      {"item": "test2", "count": 1}
     ],
     "rewardsGold": [
+      {"item": "PlatinumArmorSetBundle", "count": 1},
+      {"item": "GoldArmorSetBundle", "count": 1},
+      {"item": "RoninArmorSetBundle", "count": 1},
+      {"item": "WolfArmorSetBundle", "count": 1},
       {"item": "Terraria.ID.ItemID.Shotgun", "count": 1},
       {"item": "Terraria.ID.ItemID.Muramasa", "count": 1},
       {"item": "Terraria.ID.ItemID.NightsEdge", "count": 1}
     ],
     "rewardsPurple": [
+      {"item": "RoninArmorSetBundle", "count": 1},
+      {"item": "WolfArmorSetBundle", "count": 1},
       {"item": "Terraria.ID.ItemID.MagicMissile", "count": 1},
       {"item": "Terraria.ID.ItemID.SeafoamTrident", "count": 1},
       {"item": "Terraria.ID.ItemID.MeteoriteSword", "count": 1},

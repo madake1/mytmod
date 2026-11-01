@@ -12,12 +12,20 @@ namespace madake1.Content.UI
     public class GachaMachineUI : UIState
     {
         private const string TextureRoot = "madake1/Content/UI/";
+        private const float UpRowLeft = 46f;
+        private const float UpRowTop = 70f;
+        private const float UpRowCenterX = 200f;
+        private const float UpItemSize = 50f;
+        private const float PermanentRowLeft = 46f;
+        private const float PermanentRowTop = 160f;
+        private const float PermanentItemSize = 40f;
+        private const float ItemGap = 12f;
+        private const float PullButtonWidth = 64f;
         public UIPanel mainPanel;
         public GachaSpriteButton singleButton;
         public GachaSpriteButton tenButton;
         public GachaSpriteButton closeButton;
         private UIText goldCounterText;
-        private UIText machineNameText;
         private UIText selectedText;
         private UIElement upContainer;
         private UIElement permanentContainer;
@@ -55,35 +63,29 @@ namespace madake1.Content.UI
             mainPanel.Append(selectedText);
 
             upContainer = new UIElement();
-            upContainer.Left.Set(46f, 0f);
-            upContainer.Top.Set(70f, 0f);
+            upContainer.Left.Set(UpRowLeft, 0f);
+            upContainer.Top.Set(UpRowTop, 0f);
             upContainer.Width.Set(308f, 0f);
             upContainer.Height.Set(50f, 0f);
             mainPanel.Append(upContainer);
 
-            UIText permanentTitle = new UIText("本期常驻");
+            UIText permanentTitle = new UIText("本期常驻", 0.8f);
             permanentTitle.Left.Set(46f, 0f);
             permanentTitle.Top.Set(128f, 0f);
             permanentTitle.TextColor = new Color(129, 81, 18);
             mainPanel.Append(permanentTitle);
 
             permanentContainer = new UIElement();
-            permanentContainer.Left.Set(46f, 0f);
-            permanentContainer.Top.Set(151f, 0f);
+            permanentContainer.Left.Set(PermanentRowLeft, 0f);
+            permanentContainer.Top.Set(PermanentRowTop, 0f);
             permanentContainer.Width.Set(308f, 0f);
-            permanentContainer.Height.Set(50f, 0f);
+            permanentContainer.Height.Set(PermanentItemSize, 0f);
             mainPanel.Append(permanentContainer);
 
             rareHint = new RareRewardHint(ModContent.Request<Texture2D>(TextureRoot + "xiyou_shanguang"));
             rareHint.Left.Set(335f, 0f);
             rareHint.Top.Set(213f, 0f);
             mainPanel.Append(rareHint);
-
-            machineNameText = new UIText("", 0.85f);
-            machineNameText.Left.Set(40f, 0f);
-            machineNameText.Top.Set(210f, 0f);
-            machineNameText.TextColor = new Color(255, 223, 131);
-            mainPanel.Append(machineNameText);
 
             goldCounterText = new UIText("保底 0/80", 0.85f);
             goldCounterText.Left.Set(240f, 0f);
@@ -93,7 +95,7 @@ namespace madake1.Content.UI
 
             singleButton = CreateButton("danchou", 60f);
             singleButton.OnLeftClick += (_, _) => Pull(1);
-            tenButton = CreateButton("shilian", 272f);
+            tenButton = CreateButton("shilian", 276f);
             tenButton.OnLeftClick += (_, _) => Pull(10);
             closeButton = new GachaSpriteButton(
                 ModContent.Request<Texture2D>(TextureRoot + "guanbi_chazi"),
@@ -109,7 +111,8 @@ namespace madake1.Content.UI
         {
             var button = new GachaSpriteButton(
                 ModContent.Request<Texture2D>(TextureRoot + name),
-                ModContent.Request<Texture2D>(TextureRoot + name + "_hover"));
+                ModContent.Request<Texture2D>(TextureRoot + name + "_hover"),
+                width: PullButtonWidth, stretchColumn: 30);
             button.Left.Set(left, 0f);
             button.Top.Set(248f, 0f);
             mainPanel.Append(button);
@@ -136,7 +139,6 @@ namespace madake1.Content.UI
         public void SetMachine(GachaMachineConfig machine)
         {
             currentMachine = machine;
-            machineNameText?.SetText(machine?.displayName ?? "");
             selectedRewardItem = null;
             UpdateSelectedText();
             if (upContainer == null) return;
@@ -149,7 +151,7 @@ namespace madake1.Content.UI
             if (machine.rewardsRealGold != null)
             {
                 int visibleCount = Math.Min(machine.rewardsRealGold.Count, 5);
-                float firstItemX = (400f - (visibleCount * 50f + (visibleCount - 1) * 12f)) / 2f - 46f;
+                float firstItemX = UpRowCenterX - (visibleCount * UpItemSize + (visibleCount - 1) * ItemGap) / 2f - UpRowLeft;
                 for (int index = 0; index < visibleCount; index++)
                 {
                     var reward = machine.rewardsRealGold[index];
@@ -157,8 +159,8 @@ namespace madake1.Content.UI
                     if (reward.itemType <= 0) continue;
                     Item item = new Item();
                     item.SetDefaults(reward.itemType);
-                    var uiItem = new RewardDisplayItem(item, reward.count, new Color(218, 169, 39), selectable: true);
-                    uiItem.Left.Set(firstItemX + index * 62f, 0f);
+                    var uiItem = new RewardDisplayItem(item, reward.count, new Color(218, 169, 39), selectable: true, size: UpItemSize);
+                    uiItem.Left.Set(firstItemX + index * (UpItemSize + ItemGap), 0f);
                     int rewardIndex = index;
                     uiItem.OnLeftClick += (_, _) => SelectRewardItem(uiItem, rewardIndex);
                     if (savedIndex == index)
@@ -171,15 +173,15 @@ namespace madake1.Content.UI
             }
             if (machine.rewardsGold != null)
             {
-                for (int index = 0; index < Math.Min(machine.rewardsGold.Count, 5); index++)
+                for (int index = 0; index < Math.Min(machine.rewardsGold.Count, 6); index++)
                 {
                     var reward = machine.rewardsGold[index];
                     reward.ParseItemType();
                     if (reward.itemType <= 0) continue;
                     Item item = new Item();
                     item.SetDefaults(reward.itemType);
-                    var uiItem = new RewardDisplayItem(item, reward.count, new Color(171, 131, 53));
-                    uiItem.Left.Set(index * 62f, 0f);
+                    var uiItem = new RewardDisplayItem(item, reward.count, new Color(171, 131, 53), size: PermanentItemSize);
+                    uiItem.Left.Set(index * (PermanentItemSize + ItemGap), 0f);
                     permanentContainer.Append(uiItem);
                 }
             }

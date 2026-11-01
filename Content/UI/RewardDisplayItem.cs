@@ -16,17 +16,19 @@ public class RewardDisplayItem : UIElement
     public bool Selected;
 
     private Color backgroundColor;
+    private readonly float itemSize;
     
 
-    public RewardDisplayItem(Item item, int count, Color bgColor, bool selectable = false)
+    public RewardDisplayItem(Item item, int count, Color bgColor, bool selectable = false, float size = 50f)
     {
         DisplayItem = item;
         Count = count;
         Selectable = selectable;
         backgroundColor = bgColor;
+        itemSize = size;
 
-        Width.Set(50f, 0f);
-        Height.Set(50f, 0f);
+        Width.Set(itemSize, 0f);
+        Height.Set(itemSize, 0f);
         
     }
 
@@ -82,7 +84,7 @@ public class RewardDisplayItem : UIElement
                 float scale = 1f;
                 
                 // 计算合适的缩放比例以适应60x60的显示区域
-                float maxSize = 50f; // 留出一些边距
+                float maxSize = itemSize - 4f; // 留出一些边距
                 if (frame.Width > maxSize || frame.Height > maxSize)
                 {
                     if (frame.Width > frame.Height)
