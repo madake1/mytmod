@@ -2,7 +2,7 @@
 
 ## 作者放置
 
-传送水晶不再从 JSON 坐标生成。单人模式装备作者身份证后输入 `/crystalitem`，领取道具并放在三格连续承重地面上。放好后会产生 `AdventurePylonEntity`，进入原版晶塔地图层。
+传送水晶不再从 JSON 坐标生成。作者可用物品工具取得传送水晶道具，在单人模式装备作者身份证后，将水晶放在三格连续承重地面上。放好后会产生 `AdventurePylonEntity`，进入原版晶塔地图层。
 
 旧版从 JSON 自动生成的晶塔会在世界首次加载新版模组时清理一次。之后不会再自动清理或生成；需要作者亲自摆放。旧版的 `capital` / `west` 解锁记录不会对应新晶塔，玩家需重新右键解锁。
 
@@ -16,7 +16,6 @@
 ## 主要文件
 
 - `Common/Adventure/AdventurePylonItem.cs`：可手动放置的道具。
-- `Common/Adventure/CrystalItemCommand.cs`：作者领取命令。
 - `Common/Adventure/AdventurePylonTile.cs`：3×4 建筑、灰蓝贴图切换、右键和地图图标。
 - `Common/Adventure/CrystalWorldSystem.cs`：实际晶塔查找、安全落点与一次性旧晶塔迁移。
 - `Common/Adventure/AdventurePackets.cs`：解锁、传送的服务端验证和联机同步。

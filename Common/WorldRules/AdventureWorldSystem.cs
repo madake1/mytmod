@@ -121,9 +121,4 @@ public sealed class AdventureWorldSystem : ModSystem
             worldEvents.Add(reader.ReadString());
     }
 
-    public static void MarkCurrentWorld()
-    {
-        savedMapId = AdventureMapId;
-        savedMapVersion = CurrentMapVersion;
-    }
 }
