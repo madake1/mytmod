@@ -1,7 +1,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using madake1.Content.Items.Zhanlipin; // 引入你的道具命名空间
+using madake1.Content.Items.Zhanlipin;
 
 namespace madake1.Common.Shops
 {
@@ -9,11 +9,10 @@ namespace madake1.Common.Shops
     {
         public override void ModifyShop(NPCShop shop)
         {
-            // 商人出售 YuanShi
             if (shop.NpcType == NPCID.Merchant)
             {
-                // shop.Add<YuanShi>(); 
-                shop.Add<JinQiu>(); 
+                shop.Add<YuanShi>();
+                shop.Add<JinQiu>();
             }
         }
     }

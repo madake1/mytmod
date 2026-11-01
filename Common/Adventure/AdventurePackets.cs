@@ -5,6 +5,7 @@ using madake1.Common.Networking;
 using madake1.Common.WorldRules;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -44,7 +45,9 @@ internal static class AdventurePackets
     {
         if (Main.netMode == NetmodeID.SinglePlayer)
         {
-            string message = AdventureService.Execute(Main.LocalPlayer, action, id);
+            string message = AdventureService.Execute(Main.LocalPlayer, action, id, out bool teleported);
+            if (teleported)
+                SoundEngine.PlaySound(SoundID.Item6, Main.LocalPlayer.Center);
             Main.NewText(message);
             return;
         }
@@ -80,22 +83,29 @@ internal static class AdventurePackets
             string id = reader.ReadString();
             if (id.Length > 80 || whoAmI < 0 || whoAmI >= Main.maxPlayers || !Main.player[whoAmI].active) return;
             Player player = Main.player[whoAmI];
-            string message = AdventureService.Execute(player, action, id);
+            string message = AdventureService.Execute(player, action, id, out bool teleported);
             SendPlayerState(player, whoAmI);
             var notice = NewPacket(MyMessageType.AdventureNotice);
             notice.Write(message);
+            notice.Write(teleported);
             notice.Send(whoAmI);
             return;
         }
         if (type == MyMessageType.AdventureNotice && Main.netMode == NetmodeID.MultiplayerClient)
-            Main.NewText(reader.ReadString());
+        {
+            string message = reader.ReadString();
+            if (reader.ReadBoolean())
+                SoundEngine.PlaySound(SoundID.Item6, Main.LocalPlayer.Center);
+            Main.NewText(message);
+        }
     }
 }
 
 internal static class AdventureService
 {
-    public static string Execute(Player player, AdventureAction action, string id)
+    public static string Execute(Player player, AdventureAction action, string id, out bool teleported)
     {
+        teleported = false;
         if (!AdventureWorldSystem.IsAdventureWorld || string.IsNullOrEmpty(AdventureWorldSystem.ProgressScope))
             return "当前不是冒险地图。";
         var state = player.GetModPlayer<AdventurePlayer>();
@@ -117,6 +127,7 @@ internal static class AdventureService
             player.Teleport(position, 1);
             if (Main.netMode == NetmodeID.Server)
                 NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, position.X, position.Y);
+            teleported = true;
             return "已传送到目标水晶。";
         }
         return "未知操作。";

@@ -37,11 +37,38 @@ public static class AdventurePylonArt {
     static bool IsInk(Color c) {
         return c.A>128 && Math.Max(c.R,Math.Max(c.G,c.B))<70;
     }
-    static Bitmap StrengthenOutline(Bitmap source, Color ink) {
+    static bool TryCrystalEdgeColor(Bitmap source,int x,int y,out Color outline) {
+        outline=Color.Empty;
+        if(!(InCrystal(x,y) || (y>=30 && y<=38 && (x<15 || x>34)))) return false;
+        int bestDistance=1000, bestGreen=0;
+        for(int dy=-4;dy<=4;dy++) for(int dx=-4;dx<=4;dx++) {
+            int sx=x+dx,sy=y+dy;
+            if(sx<0 || sx>=W || sy<0 || sy>=H) continue;
+            Color c=source.GetPixel(sx,sy);
+            if(c.A<128 || c.B<70 || c.B<=c.R*1.25 || c.B<=c.G*1.05) continue;
+            int distance=dx*dx+dy*dy;
+            if(distance<bestDistance || (distance==bestDistance && c.G>bestGreen)) {
+                bestDistance=distance;
+                bestGreen=c.G;
+            }
+        }
+        if(bestDistance>16) return false;
+        outline=bestGreen>=160 ? Color.FromArgb(27,85,145)
+            : bestGreen>=70 ? Color.FromArgb(20,60,115)
+            : Color.FromArgb(12,39,85);
+        return true;
+    }
+    static Bitmap StrengthenOutline(Bitmap source, Color ink, bool tintCrystal) {
         Bitmap b = new Bitmap(W,H,PixelFormat.Format32bppArgb);
         for(int y=0;y<H;y++) for(int x=0;x<W;x++) {
             Color c=source.GetPixel(x,y);
-            if(c.A>128) { b.SetPixel(x,y,c); continue; }
+            Color crystalEdge;
+            if(c.A>128) {
+                if(tintCrystal && c.R<36 && c.G<36 && c.B<36
+                    && TryCrystalEdgeColor(source,x,y,out crystalEdge)) c=crystalEdge;
+                b.SetPixel(x,y,c);
+                continue;
+            }
             bool touchesInk=false;
             for(int dy=-1;dy<=1 && !touchesInk;dy++) for(int dx=-1;dx<=1;dx++) {
                 int sx=x+dx, sy=y+dy;
@@ -49,7 +76,8 @@ public static class AdventurePylonArt {
                     touchesInk=true; break;
                 }
             }
-            if(touchesInk) b.SetPixel(x,y,ink);
+            if(touchesInk) b.SetPixel(x,y,
+                tintCrystal && TryCrystalEdgeColor(source,x,y,out crystalEdge) ? crystalEdge : ink);
         }
         return b;
     }
@@ -141,12 +169,12 @@ public static class AdventurePylonArt {
         using(Bitmap packedUnlocked=new Bitmap(unlockedPath))
         using(Bitmap rawLocked=Unpack(packedLocked))
         using(Bitmap rawUnlocked=Unpack(packedUnlocked))
-        using(Bitmap locked=StrengthenOutline(rawLocked,Color.FromArgb(17,18,25)))
-        using(Bitmap unlocked=StrengthenOutline(rawUnlocked,Color.FromArgb(0,0,17))) {
+        using(Bitmap locked=StrengthenOutline(rawLocked,Color.FromArgb(17,18,25),false))
+        using(Bitmap unlocked=StrengthenOutline(rawUnlocked,Color.FromArgb(0,0,17),true)) {
             Bitmap baseTile, body;
             SplitCrystal(unlocked,out baseTile,out body);
             using(baseTile) using(body)
-            using(Bitmap ring=MakeRingForeground(unlocked))
+            using(Bitmap ring=MakeRingForeground(rawUnlocked))
             using(Bitmap glow=MakeGlow(body))
             using(Bitmap previewGlow=PreviewGlow(glow)) {
                 using(Bitmap packed=Pack(locked)) packed.Save(System.IO.Path.Combine(outputDir,"AdventurePylonTile.png"),ImageFormat.Png);
